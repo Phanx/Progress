@@ -1,0 +1,13 @@
+## Interface: 20400
+
+## Title: Progress
+## Notes: Experience and reputation info for DataBroker displays.
+## Version: 3.0.1.wowi:revision
+## Author: Phanx
+## URL: http://www.wowinterface.com/downloads/info????-Progress.html
+## X-Email: addons AT phanx net
+## X-Credits: Inspired by Wobin's FuBar_FuXPFu.
+## OptionalDependencies: LibDataBroker-1.1
+## SavedVariables: ProgressDB
+
+Progress.lua
