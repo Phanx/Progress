@@ -43,6 +43,14 @@ local XP_TO_MAX_LEVEL = XP_TO_LEVEL[MAX_LEVEL]
 local db, shortfactions = ProgressDB, {}
 local L = setmetatable(Progress_LOCALS or {}, { __index = function(t, k) rawset(t, k, k) return k end })
 
+local function GetQuadrant(frame)
+	local x,y = frame:GetCenter()
+	if not x or not y then return "BOTTOMLEFT", "BOTTOM", "LEFT" end
+	local hhalf = (x > UIParent:GetWidth()/2) and "RIGHT" or "LEFT"
+	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
+	return vhalf..hhalf, vhalf, hhalf
+end
+
 local Progress = CreateFrame("Frame", "Progress_Frame")
 Progress.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Progress", {
 	type = "data source",
@@ -66,7 +74,11 @@ function Progress:UpdateText()
 end
 
 function Progress.obj:OnEnter()
+	local quad, vhalf, hhalf = GetQuadrant(self)
+	local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
 	GameTooltip:SetOwner(self, "ANCHOR_NONE")
+	GameTooltip:SetPoint(quad, self, anchpoint)
+
 	GameTooltip:AddLine(L["Progress"])
 
 	local needblank
