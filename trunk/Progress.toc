@@ -6,6 +6,7 @@
 ## Author: Phanx
 ## URL: http://www.wowinterface.com/downloads/info????-Progress.html
 ## X-Email: addons AT phanx net
+## X-Copyright: Copyright© 2008 Alyssa Kinley, aka Phanx
 ## X-Credits: Inspired by Wobin's FuBar_FuXPFu.
 ## OptionalDependencies: LibDataBroker-1.1
 ## SavedVariables: ProgressDB
