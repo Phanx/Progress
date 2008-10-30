@@ -4,7 +4,7 @@
 	by Phanx < addons AT phanx net >
 --]]
 
-ProgressDB = { -- Currently, editing this table is the only way to change settings.
+ProgressDB = {				-- Currently, editing this table is the only way to change settings.
 	forceRep = false,		-- Show reputation in the tooltip even if below max level
 	longText = false,		-- Does nothing yet; will show current level or watched faction on plugin text
 	shortFactions = true,	-- Does nothing yet; will abbreviate name shown with longText
