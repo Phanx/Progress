@@ -3,13 +3,13 @@
 
 ## Title: Progress
 ## Notes: Experience and reputation info for DataBroker displays.
+## X-Copyright: Copyright © 2007–2008 Alyssa S. Kinley, a.k.a. Phanx
+## X-License: Do not redistribute. See README for complete license terms.
 ## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
 
 ## Author: Phanx
-## X-Email: addons AT phanx net
-## X-Copyright: Copyright© 2008 Alyssa Kinley, aka Phanx
-## X-License: Do not distribute in any form without prior consent. See included README for full license terms.
 ## X-Credits: Inspired by Wobin's FuBar_FuXPFu.
+## X-Email: addons@phanx.net
 
 ## SavedVariables: ProgressDB
 
