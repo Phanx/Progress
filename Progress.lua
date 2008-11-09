@@ -1,7 +1,9 @@
 --[[
 	Progress
 	Experience and reputation plugin for any DataBroker addon.
-	by Phanx < addons AT phanx net >
+	by Phanx < addons@phanx.net >
+	http://www.wowinterface.com/downloads/info11032-Progress.html
+	See README for license terms and other information.
 --]]
 
 ProgressDB = {				-- Currently, editing this table is the only way to change settings.
@@ -43,6 +45,14 @@ local XP_TO_MAX_LEVEL = XP_TO_LEVEL[MAX_LEVEL]
 local db, shortfactions = ProgressDB, {}
 local L = setmetatable(Progress_LOCALS or {}, { __index = function(t, k) rawset(t, k, k) return k end })
 
+local function Debug(lvl, str, ...)
+	if lvl > 0 then return end
+	if select("#", ...) > 0 then
+		str = str:format(...)
+	end
+	DEFAULT_CHAT_FRAME:AddMessage("|cffff7f7fProgress:|r "..str)
+end
+
 local function GetQuadrant(frame)
 	local x,y = frame:GetCenter()
 	if not x or not y then return "BOTTOMLEFT", "BOTTOM", "LEFT" end
@@ -61,6 +71,7 @@ Progress.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Progress",
 })
 
 function Progress:UpdateText()
+	Debug(2, "UpdateText")
 	if UnitLevel("player") < MAX_LEVEL then
 		self.obj.text = UnitXP("player").."/"..UnitXPMax("player")
 	elseif GetWatchedFactionInfo() then
@@ -122,11 +133,7 @@ function Progress.obj:OnEnter()
 	GameTooltip:Show()
 end
 
-Progress:SetScript("OnEvent", function(self, event, ...)
-	if self[event] then
-		return self[event](self, ...)
-	end
-end)
+Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
 
 function Progress:PLAYER_LOGIN()
 	db = ProgressDB
@@ -138,7 +145,7 @@ function Progress:PLAYER_LOGIN()
 	else
 		self:RegisterEvent("UPDATE_FACTION")
 		self:RegisterEvent("PLAYER_LEVEL_UP")
-		hooksecurefunc("SetWatchedFactionIndex", function() self:UpdateText() end)
+		hooksecurefunc("SetWatchedFactionIndex", function() return self:UpdateText() end)
 	end
 --[[
 	local name, isHeader, isCollapsed, isWatched
