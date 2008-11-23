@@ -1,9 +1,9 @@
 ## Interface: 30000
-## Version: 3.0.2.wowi:revision
+## Version: 3.0.3.wowi:revision
 
 ## Title: Progress
 ## Notes: Experience and reputation info for DataBroker displays.
-## X-Copyright: Copyright © 2007–2008 Alyssa S. Kinley, a.k.a. Phanx
+## X-Copyright: Copyright © 2008 Alyssa S. Kinley, a.k.a. Phanx
 ## X-License: Do not redistribute. See README for complete license terms.
 ## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
 

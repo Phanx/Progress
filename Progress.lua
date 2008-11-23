@@ -22,28 +22,99 @@ local STANDING_COLOR = {
 	"|cff00ffcc", -- Revered
 	"|cff00ffff", -- Exalted
 }
-local XP_TO_LEVEL = {
-		 0,       400,     1300,     2700,     4800, 	-- 5
-	   7600,     11200,    15700,    21100,    27600, 	-- 10
-	  35200,     44000,    54100,    65500,    78400, 	-- 15
-	  92800,    108800,   126500,   145900,   167200, 	-- 20
-	  190400,   215600,   242900,   272300,   304000, 	-- 25
-	  338000,   374400,   413300,   454700,   499000, 	-- 30
-	  546400,   597200,   651900,   710500,   773300, 	-- 25
-	  840300,   911900,   988000,  1068800,  1154500, 	-- 40
-	 1245200,  1341000,  1442000,  1548300,  1660100, 	-- 45
-	 1777500,  1900700,  2029800,  2164900,  2306100, 	-- 50
-	 2453600,  2607500,  2767900,  2935000,  3108900, 	-- 55
-	 3289700,  3477600,  3672600,  3874900,  4084700, 	-- 60
-	 4578700,  5153400,  5767800,  6418100,  7100400, 	-- 65 -- TODO: Update for Wrath changes
-	 7810600,  8544700,  9298400, 10067300, 10847000, 	-- 70 -- TODO: Update for Wrath changes
-	12588500,        0,        0,        0,        0, 	-- 75 -- TODO: Add Wrath data
-	       0,        0,        0,        0,        0, 	-- 80 -- TODO: Add Wrath data
+
+local XP_PER_LEVEL = { -- How much XP needed to complete each level
+	400,
+	900,
+	1400,
+	2100,
+	2800, -- 5
+	3600,
+	4500,
+	5400,
+	6500,
+	7600, -- 10
+	8700,
+	9800,
+	11000,
+	12300,
+	13600, -- 15
+	15000,
+	16400,
+	17800,
+	19300,
+	20800, -- 20
+	22400,
+	24000,
+	25500,
+	27200,
+	28900, -- 25
+	30500,
+	32200,
+	33900,
+	36300,
+	38800, -- 30
+	41600,
+	44600,
+	48000,
+	51400,
+	55000, -- 35
+	58700,
+	62400,
+	66200,
+	70200,
+	74300, -- 40
+	78500,
+	82800,
+	87100,
+	91600,
+	96300, -- 45
+	101000,
+	105800,
+	110700,
+	115700,
+	120900, -- 50
+	126100,
+	131500,
+	137000,
+	142500,
+	148200, -- 55
+	154000,
+	159900,
+	165800,
+	172000,
+	290000, -- 60
+	317000,
+	349000,
+	386000,
+	428000,
+	475000, -- 65
+	527000,
+	585000,
+	658000,
+	717000,
+	1523800, -- 70
+	1539600,
+	1555700,
+	1571800,
+	1587900,
+	1604200, -- 75
+	1620700,
+	1637400,
+	1653900,
+	1670800,
 }
-local MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()] or 80 -- #TODO: Change for Wrath
-local XP_TO_MAX_LEVEL = XP_TO_LEVEL[MAX_LEVEL]
-local db, shortfactions = ProgressDB, {}
-local L = setmetatable(Progress_LOCALS or {}, { __index = function(t, k) rawset(t, k, k) return k end })
+local MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]
+
+local XP_TO_MAX_LEVEL = 0
+for i = 1, MAX_LEVEL - 1 do
+	XP_TO_MAX_LEVEL = XP_TO_MAX_LEVEL + XP_PER_LEVEL[i]
+end
+
+local xpToCurrentLevel = 0
+
+local db, shortFactions = ProgressDB, {}
+local L = setmetatable(PROGRESS_LOCALS or {}, { __index = function(t, k) rawset(t, k, k) return k end })
 
 local function Debug(lvl, str, ...)
 	if lvl > 0 then return end
@@ -51,14 +122,6 @@ local function Debug(lvl, str, ...)
 		str = str:format(...)
 	end
 	DEFAULT_CHAT_FRAME:AddMessage("|cffff7f7fProgress:|r "..str)
-end
-
-local function GetQuadrant(frame)
-	local x,y = frame:GetCenter()
-	if not x or not y then return "BOTTOMLEFT", "BOTTOM", "LEFT" end
-	local hhalf = (x > UIParent:GetWidth()/2) and "RIGHT" or "LEFT"
-	local vhalf = (y > UIParent:GetHeight()/2) and "TOP" or "BOTTOM"
-	return vhalf..hhalf, vhalf, hhalf
 end
 
 local Progress = CreateFrame("Frame", "Progress_Frame")
@@ -84,21 +147,18 @@ function Progress:UpdateText()
 	end
 end
 
-function Progress.obj:OnEnter()
-	local quad, vhalf, hhalf = GetQuadrant(self)
-	local anchpoint = (vhalf == "TOP" and "BOTTOM" or "TOP")..hhalf
-	GameTooltip:SetOwner(self, "ANCHOR_NONE")
-	GameTooltip:SetPoint(quad, self, anchpoint)
+function Progress.obj:OnTooltipShow(tooltip)
+	tooltip = tooltip or GameTooltip
 
-	GameTooltip:AddLine(L["Progress"])
+	tooltip:AddLine(L["Progress"])
 
 	local needblank
 	local myLevel = UnitLevel("player")
 	if myLevel < MAX_LEVEL then
-		GameTooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			GameTooltip:AddDoubleLine(L["Current XP"], cur.."/"..max.." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Current XP"], cur.."/"..max.." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
 			if rest then
 				local restperc
 				if rest - (max - cur) > 0 then
@@ -106,31 +166,29 @@ function Progress.obj:OnEnter()
 				else
 					restperc = floor(rest / max * 100)
 				end
-				GameTooltip:AddDoubleLine(L["Rested XP"], rest.." ("..restperc..")%", nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["Rested XP"], rest.." ("..restperc..")%", nil, nil, nil, 1, 1, 1)
 			end
-			GameTooltip:AddDoubleLine(L["XP To Next Level"], max - cur, nil, nil, nil, 1, 1, 1)
-			if not IS_WRATH_BUILD then
-				GameTooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), XP_TO_MAX_LEVEL - (XP_TO_LEVEL[myLevel] + cur), nil, nil, nil, 1, 1, 1)
-			end
+			tooltip:AddDoubleLine(L["XP To Next Level"], max - cur, nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur), nil, nil, nil, 1, 1, 1)
 		end
 		needblank = true
 	end
 	if myLevel == MAX_LEVEL or db.forceRep then
 		if needblank then
-			GameTooltip:AddLine(" ")
+			tooltip:AddLine(" ")
 			needblank = nil
 		end
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
-		GameTooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
-		GameTooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		GameTooltip:AddDoubleLine(L["Progress"], (cur - min).."/"..(max - min), nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
+		tooltip:AddDoubleLine(L["Progress"], (cur - min).."/"..(max - min), nil, nil, nil, 1, 1, 1)
 		if standing < 8 then
-			GameTooltip:AddDoubleLine(L["To Next Standing"], max - cur, nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["To Next Standing"], max - cur, nil, nil, nil, 1, 1, 1)
 		end
 	end
-	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine(L["Click to open the reputation panel."], 0.2, 1, 0.2)
-	GameTooltip:Show()
+	tooltip:AddLine(" ")
+	tooltip:AddLine(L["Click to open the reputation panel."], 0.2, 1, 0.2)
+	tooltip:Show()
 end
 
 Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
@@ -174,13 +232,13 @@ function Progress:PLAYER_LOGIN()
 					words = words + 1
 				end
 				if words == 1 then
-					shortfactions[name] = shortbase:sub(1, 4):gsub("[^%a]", "")
+					shortFactions[name] = shortbase:sub(1, 4):gsub("[^%a]", "")
 				else
 					local shortname = ""
 					for word in shortbase:gmatch("[^s%-']+") do
 						shortname = shortname..word:sub(1, 1)
 					end
-					shortfactions[name] = shortname
+					shortFactions[name] = shortname
 				end
 			end
 		end
@@ -193,12 +251,21 @@ function Progress:PLAYER_LOGIN()
 end
 
 function Progress:PLAYER_LEVEL_UP()
-	if UnitLevel("player") == MAX_LEVEL then
+	local level = UnitLevel("player")
+	if level == MAX_LEVEL then
+		xpToCurrentLevel = XP_TO_MAX_LEVEL
 		self:RegisterEvent("UPDATE_FACTION")
 		self:UnregisterEvent("PLAYER_LEVEL_UP")
 		self:UnregisterEvent("PLAYER_XP_UPDATE")
 		self:UnregisterEvent("UPDATE_EXHAUSTION")
 		hooksecurefunc("SetWatchedFactionIndex", function() self:UpdateText() end)
+	else
+		xpToCurrentLevel = 0
+		if level > 1 then
+			for i = 1, level - 1 do
+				xpToCurrentLevel = xpToCurrentLevel + XP_PER_LEVEL[i]
+			end
+		end
 	end
 end
 
