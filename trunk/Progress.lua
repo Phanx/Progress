@@ -6,8 +6,9 @@
 	See README for license terms and other information.
 --]]
 
-ProgressDB = {				-- Currently, editing this table is the only way to change settings.
+local defaults = {			-- Currently, editing this table is the only way to change settings.
 	forceRep = false,		-- Show reputation in the tooltip even if below max level
+	friendlyNumbers = true,	-- Adds digit grouping to large numbers
 	longText = false,		-- Does nothing yet; will show current level or watched faction on plugin text
 	shortFactions = true,	-- Does nothing yet; will abbreviate name shown with longText
 }
@@ -113,7 +114,8 @@ end
 
 local xpToCurrentLevel = 0
 
-local db, shortFactions = ProgressDB, {}
+local db
+local shortFactions = {}
 local L = setmetatable(PROGRESS_LOCALS or {}, { __index = function(t, k) rawset(t, k, k) return k end })
 
 local function Debug(lvl, str, ...)
@@ -124,7 +126,15 @@ local function Debug(lvl, str, ...)
 	DEFAULT_CHAT_FRAME:AddMessage("|cffff7f7fProgress:|r "..str)
 end
 
-local Progress = CreateFrame("Frame", "Progress_Frame")
+local function GroupDigits(num)
+	if not num then return 0 end
+	if num < 10000 then return num end
+
+	local left, num, right = string.match(num, "^([^%d]*%d)(%d*)(.-)$")
+	return left..(num:reverse():gsub("(%d%d%d)", "%1,"):reverse())..right
+end
+
+local Progress = CreateFrame("Frame")
 Progress.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Progress", {
 	type = "data source",
 	text = "Progress",
@@ -140,15 +150,15 @@ function Progress:UpdateText()
 	elseif GetWatchedFactionInfo() then
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		if name then
-			self.obj.text = STANDING_COLOR[standing]..(cur - min).."/"..(max - min).."|r"
+			self.obj.text = STANDING_COLOR[standing]..GroupDigits(cur - min).."/"..GroupDigits(max - min).."|r"
 		end
 	else
 		self.obj.text = "Exp/Rep"
 	end
 end
 
-function Progress.obj:OnTooltipShow(tooltip)
-	tooltip = tooltip or GameTooltip
+function Progress.obj.OnTooltipShow(tooltip)
+--	tooltip = (tooltip and type(tooltip) == "table" and tooltip.AddLine) or GameTooltip
 
 	tooltip:AddLine(L["Progress"])
 
@@ -158,7 +168,7 @@ function Progress.obj:OnTooltipShow(tooltip)
 		tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			tooltip:AddDoubleLine(L["Current XP"], cur.."/"..max.." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Current XP"], GroupDigits(cur).."/"..GroupDigits(max).." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
 			if rest then
 				local restperc
 				if rest - (max - cur) > 0 then
@@ -166,10 +176,10 @@ function Progress.obj:OnTooltipShow(tooltip)
 				else
 					restperc = floor(rest / max * 100)
 				end
-				tooltip:AddDoubleLine(L["Rested XP"], rest.." ("..restperc..")%", nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["Rested XP"], GroupDigits(rest).." ("..restperc..")%", nil, nil, nil, 1, 1, 1)
 			end
-			tooltip:AddDoubleLine(L["XP To Next Level"], max - cur, nil, nil, nil, 1, 1, 1)
-			tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur)), nil, nil, nil, 1, 1, 1)
 		end
 		needblank = true
 	end
@@ -181,9 +191,9 @@ function Progress.obj:OnTooltipShow(tooltip)
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
 		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		tooltip:AddDoubleLine(L["Progress"], (cur - min).."/"..(max - min), nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Progress"], GroupDigits(cur - min).."/"..GroupDigits(max - min), nil, nil, nil, 1, 1, 1)
 		if standing < 8 then
-			tooltip:AddDoubleLine(L["To Next Standing"], max - cur, nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 		end
 	end
 	tooltip:AddLine(" ")
@@ -194,7 +204,18 @@ end
 Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
 
 function Progress:PLAYER_LOGIN()
-	db = ProgressDB
+	if not ProgressDB then
+		ProgressDB = defaults
+		db = ProgressDB
+	else
+		db = ProgressDB
+		for k, v in pairs(defaults) do
+			if db[k] == nil or type(db[k]) ~= type(defaults[k]) then
+				db[k] = v
+			end
+		end
+	end
+
 	self:PLAYER_LEVEL_UP()
 
 	if UnitLevel("player") < MAX_LEVEL then
