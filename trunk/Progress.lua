@@ -146,11 +146,12 @@ Progress.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Progress",
 function Progress:UpdateText()
 	Debug(2, "UpdateText")
 	if UnitLevel("player") < MAX_LEVEL then
-		self.obj.text = UnitXP("player").."/"..UnitXPMax("player")
+		local cur, max = UnitXP("player"), UnitXPMax("player")
+		self.obj.text = GroupDigits(cur - max) .. " (" .. math.floor(cur / max * 100) .. "%)"
 	elseif GetWatchedFactionInfo() then
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		if name then
-			self.obj.text = STANDING_COLOR[standing]..GroupDigits(cur - min).."/"..GroupDigits(max - min).."|r"
+			self.obj.text = STANDING_COLOR[standing] .. GroupDigits((max - min) - (cur - min)) .. " (" .. math.floor((cur - min) / (max - min) * 100) .. "%)"
 		end
 	else
 		self.obj.text = "Exp/Rep"
