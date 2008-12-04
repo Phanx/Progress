@@ -154,13 +154,11 @@ function Progress:UpdateText()
 			self.obj.text = STANDING_COLOR[standing] .. GroupDigits((max - min) - (cur - min)) .. " (" .. math.floor((cur - min) / (max - min) * 100) .. "%)"
 		end
 	else
-		self.obj.text = "Exp/Rep"
+		self.obj.text = "Progress"
 	end
 end
 
 function Progress.obj.OnTooltipShow(tooltip)
---	tooltip = (tooltip and type(tooltip) == "table" and tooltip.AddLine) or GameTooltip
-
 	tooltip:AddLine(L["Progress"])
 
 	local needblank
