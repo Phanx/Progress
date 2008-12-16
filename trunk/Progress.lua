@@ -128,10 +128,14 @@ end
 
 local function GroupDigits(num)
 	if not num then return 0 end
-	if num < 10000 then return num end
+
+	if abs(num) < 10000 then return num end
+
+	local neg = num < 0 and "-" or ""
+	num = abs(num)
 
 	local left, num, right = string.match(num, "^([^%d]*%d)(%d*)(.-)$")
-	return left..(num:reverse():gsub("(%d%d%d)", "%1,"):reverse())..right
+	return neg..left..(num:reverse():gsub("(%d%d%d)", "%1,"):reverse())..right
 end
 
 local Progress = CreateFrame("Frame")
