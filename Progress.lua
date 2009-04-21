@@ -6,7 +6,7 @@
 	See README for license terms and other information.
 --]]
 
-local defaults = {			-- Currently, editing this table is the only way to change settings.
+local defaults = {
 	forceRep = false,		-- Show reputation in the tooltip even if below max level
 	friendlyNumbers = true,	-- Adds digit grouping to large numbers
 	longText = false,		-- Does nothing yet; will show current level or watched faction on plugin text
@@ -171,15 +171,9 @@ function Progress.obj.OnTooltipShow(tooltip)
 		tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			tooltip:AddDoubleLine(L["Current XP"], GroupDigits(cur).."/"..GroupDigits(max).." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Current XP"], GroupDigits(cur) .. "/" .. GroupDigits(max).." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
 			if rest then
-				local restperc
-				if rest - (max - cur) > 0 then
-					restperc = floor((rest - (max - cur)) / max * 100) + 100
-				else
-					restperc = floor(rest / max * 100)
-				end
-				tooltip:AddDoubleLine(L["Rested XP"], GroupDigits(rest).." ("..restperc..")%", nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["Rested XP"], GroupDigits(rest) .. " (" .. floor(rest / max * 1000 ) / 10 .."%)", nil, nil, nil, 1, 1, 1)
 			end
 			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 			tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur)), nil, nil, nil, 1, 1, 1)
