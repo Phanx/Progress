@@ -139,68 +139,11 @@ local function GroupDigits(num)
 end
 
 local Progress = CreateFrame("Frame")
-Progress.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Progress", {
-	type = "data source",
-	text = "Progress",
-	icon = "Interface\\Icons\\INV_Misc_PocketWatch_02",
-	OnClick = function() ToggleCharacter("ReputationFrame") end,
-	OnLeave = function() GameTooltip:Hide() end,
-})
-
-function Progress:UpdateText()
-	Debug(2, "UpdateText")
-	if UnitLevel("player") < MAX_LEVEL then
-		local cur, max = UnitXP("player"), UnitXPMax("player")
-		self.obj.text = GroupDigits(cur - max) .. " (" .. math.floor(cur / max * 100) .. "%)"
-	elseif GetWatchedFactionInfo() then
-		local name, standing, min, max, cur = GetWatchedFactionInfo()
-		if name then
-			self.obj.text = STANDING_COLOR[standing] .. GroupDigits((max - min) - (cur - min)) .. " (" .. math.floor((cur - min) / (max - min) * 100) .. "%)"
-		end
-	else
-		self.obj.text = "Progress"
-	end
-end
-
-function Progress.obj.OnTooltipShow(tooltip)
-	tooltip:AddLine(L["Progress"])
-
-	local needblank
-	local myLevel = UnitLevel("player")
-	if myLevel < MAX_LEVEL then
-		tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
-		if myLevel < MAX_LEVEL then
-			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			tooltip:AddDoubleLine(L["Current XP"], GroupDigits(cur) .. "/" .. GroupDigits(max).." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
-			if rest then
-				tooltip:AddDoubleLine(L["Rested XP"], GroupDigits(rest) .. " (" .. floor(rest / max * 1000 ) / 10 .."%)", nil, nil, nil, 1, 1, 1)
-			end
-			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
-			tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur)), nil, nil, nil, 1, 1, 1)
-		end
-		needblank = true
-	end
-	if myLevel == MAX_LEVEL or db.forceRep then
-		if needblank then
-			tooltip:AddLine(" ")
-			needblank = nil
-		end
-		local name, standing, min, max, cur = GetWatchedFactionInfo()
-		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
-		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		tooltip:AddDoubleLine(L["Progress"], GroupDigits(cur - min).."/"..GroupDigits(max - min), nil, nil, nil, 1, 1, 1)
-		if standing < 8 then
-			tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
-		end
-	end
-	tooltip:AddLine(" ")
-	tooltip:AddLine(L["Click to open the reputation panel."], 0.2, 1, 0.2)
-	tooltip:Show()
-end
-
 Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
 
-function Progress:PLAYER_LOGIN()
+function Progress:ADDON_LOADED(addon)
+	if addon ~= "Progress" then return end
+
 	if not ProgressDB then
 		ProgressDB = defaults
 		db = ProgressDB
@@ -211,6 +154,77 @@ function Progress:PLAYER_LOGIN()
 				db[k] = v
 			end
 		end
+	end
+
+	self:UnregisterEvent("ADDON_LOADED")
+	self.ADDON_LOADED = nil
+	
+	if IsLoggedIn() then
+		self:PLAYER_LOGIN()
+	else
+		self:RegisterEvent("PLAYER_LOGIN")
+	end
+end
+
+function Progress:PLAYER_LOGIN()
+	self.obj = LibStub:GetLibrary("LibDataBroker-1.1"):NewDataObject("Progress", {
+		type = "data source",
+		icon = "Interface\\Icons\\INV_Misc_PocketWatch_02",
+		label = "Progress",
+		text = "Progress",
+		OnClick = function() ToggleCharacter("ReputationFrame") end,
+		OnLeave = function() GameTooltip:Hide() end,
+	})
+
+	function self:UpdateText()
+		Debug(2, "UpdateText")
+		if UnitLevel("player") < MAX_LEVEL then
+			local cur, max = UnitXP("player"), UnitXPMax("player")
+			self.obj.text = GroupDigits(cur - max) .. " (" .. math.floor(cur / max * 100) .. "%)"
+		elseif GetWatchedFactionInfo() then
+			local name, standing, min, max, cur = GetWatchedFactionInfo()
+			if name then
+				self.obj.text = STANDING_COLOR[standing] .. GroupDigits((max - min) - (cur - min)) .. " (" .. math.floor((cur - min) / (max - min) * 100) .. "%)"
+			end
+		else
+			self.obj.text = "Progress"
+		end
+	end
+
+	function self.obj.OnTooltipShow(tooltip)
+		tooltip:AddLine(L["Progress"])
+
+		local needblank
+		local myLevel = UnitLevel("player")
+		if myLevel < MAX_LEVEL then
+			tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
+			if myLevel < MAX_LEVEL then
+				local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
+				tooltip:AddDoubleLine(L["Current XP"], GroupDigits(cur) .. "/" .. GroupDigits(max).." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
+				if rest then
+					tooltip:AddDoubleLine(L["Rested XP"], GroupDigits(rest) .. " (" .. floor(rest / max * 1000 ) / 10 .."%)", nil, nil, nil, 1, 1, 1)
+				end
+				tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur)), nil, nil, nil, 1, 1, 1)
+			end
+			needblank = true
+		end
+		if myLevel == MAX_LEVEL or db.forceRep then
+			if needblank then
+				tooltip:AddLine(" ")
+				needblank = nil
+			end
+			local name, standing, min, max, cur = GetWatchedFactionInfo()
+			tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
+			tooltip:AddDoubleLine(L["Progress"], GroupDigits(cur - min).."/"..GroupDigits(max - min), nil, nil, nil, 1, 1, 1)
+			if standing < 8 then
+				tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+			end
+		end
+		tooltip:AddLine(" ")
+		tooltip:AddLine(L["Click to open the reputation panel."], 0.2, 1, 0.2)
+		tooltip:Show()
 	end
 
 	self:PLAYER_LEVEL_UP()
@@ -291,4 +305,4 @@ Progress.UPDATE_FACTION = Progress.UpdateText
 Progress.UPDATE_EXHAUSTION = Progress.UpdateText
 Progress.PLAYER_XP_UPDATE = Progress.UpdateText
 
-Progress:RegisterEvent("PLAYER_LOGIN")
+Progress:RegisterEvent("ADDON_LOADED")
