@@ -1,5 +1,5 @@
 ## Interface: 30100
-## Version: 3.1.0.wowi:revision
+## Version: 3.1.1.wowi:revision
 
 ## Title: Progress
 ## Notes: DataBroker plugin for basic experience and reputation status.
@@ -17,8 +17,8 @@
 
 ## SavedVariables: ProgressDB
 
-Libs\LibStub.lua
-Libs\CallbackHandler-1.0.lua
-Libs\LibDataBroker-1.1.lua
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
+Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 
 Progress.lua
