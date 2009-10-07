@@ -1,10 +1,14 @@
-## Interface: 30100
-## Version: 3.1.1.wowi:revision
+## Interface: 30200
+## Version: 3.2.2.wowi:revision
 
 ## Title: Progress
 ## Notes: DataBroker plugin for basic experience and reputation status.
-## X-Copyright: Public Domain
+## X-Copyright: Copyright ©2009 Alyssa "Phanx" Kinley
+## X-License: Do not redistribute. See README for full license terms.
 ## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
+
+## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
+## X-Localizations: enUS
 
 ## Author: Phanx
 ## X-Email: addons@phanx.net
