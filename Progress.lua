@@ -1,10 +1,11 @@
---[[
+--[[--------------------------------------------------------------------
 	Progress
 	Experience and reputation plugin for any DataBroker addon.
 	by Phanx < addons@phanx.net >
 	http://www.wowinterface.com/downloads/info11032-Progress.html
-	See README for license terms and other information.
---]]
+	Copyright © 2008–2009 Alyssa "Phanx" Kinley
+	See README for license terms and additional information.
+----------------------------------------------------------------------]]
 
 local defaults = {
 	forceRep = false,		-- Show reputation in the tooltip even if below max level
@@ -278,6 +279,10 @@ function Progress:PLAYER_LOGIN()
 --]]
 	self:UpdateText()
 
+	self.UPDATE_FACTION = self.UpdateText
+	self.UPDATE_EXHAUSTION = self.UpdateText
+	self.PLAYER_XP_UPDATE = self.UpdateText
+
 	self:UnregisterEvent("PLAYER_LOGIN")
 	self.PLAYER_LOGIN = nil
 end
@@ -300,9 +305,5 @@ function Progress:PLAYER_LEVEL_UP()
 		end
 	end
 end
-
-Progress.UPDATE_FACTION = Progress.UpdateText
-Progress.UPDATE_EXHAUSTION = Progress.UpdateText
-Progress.PLAYER_XP_UPDATE = Progress.UpdateText
 
 Progress:RegisterEvent("ADDON_LOADED")
