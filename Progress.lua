@@ -123,25 +123,22 @@ end
 
 local function GroupDigits(num)
 	if not num then return 0 end
-
 	if abs(num) < 10000 then return num end
 
 	local neg = num < 0 and "-" or ""
-	num = abs(num)
-
-	local left, num, right = num:match("^([^%d]*%d)(%d*)(.-)$")
-	return ("%d%d%d%d", neg, left, num:reverse():gsub("(%d%d%d)", "%1,"):reverse(), right)
+	local left, mid, right = tostring(abs(num)):match("^([^%d]*%d)(%d*)(.-)$")
+	return ("%s%s%s%s"):format(neg, left, mid:reverse():gsub("(%d%d%d)", "%1,"):reverse(), right)
 end
 
 function Progress:UpdateText()
 	Debug(2, "UpdateText")
 	if UnitLevel("player") < MAX_LEVEL then
 		local cur, max = UnitXP("player"), UnitXPMax("player")
-		self.obj.text = GroupDigits(cur - max) .. " (" .. math.floor(cur / max * 100) .. "%)"
+		self.obj.text = ("%s (%d%%)"):format(GroupDigits(cur - max), math.floor(cur / max * 100))
 	elseif GetWatchedFactionInfo() then
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		if name then
-			self.obj.text = STANDING_COLOR[standing] .. GroupDigits((max - min) - (cur - min)) .. " (" .. math.floor((cur - min) / (max - min) * 100) .. "%)"
+			self.obj.text = ("%s%s (%d%%)"):format(STANDING_COLOR[standing], GroupDigits((max - min) - (cur - min)), math.floor((cur - min) / (max - min) * 100))
 		end
 	else
 		self.obj.text = "Progress"
@@ -150,6 +147,7 @@ end
 
 function Progress:UpdateTooltip(tooltip)
 	tooltip:AddLine(L["Progress"])
+	tooltip:AddLine(" ")
 
 	local needblank
 	local myLevel = UnitLevel("player")
@@ -157,11 +155,12 @@ function Progress:UpdateTooltip(tooltip)
 		tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			tooltip:AddDoubleLine(L["Current XP"], GroupDigits(cur) .. "/" .. GroupDigits(max).." ("..floor(cur / max * 100).."%)", nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Current XP"], ("%s/%s (%d%%)"):format(GroupDigits(cur), GroupDigits(max), floor(cur / max * 100)), nil, nil, nil, 1, 1, 1)
 			if rest then
-				tooltip:AddDoubleLine(L["Rested XP"], GroupDigits(rest) .. " (" .. floor(rest / max * 1000 ) / 10 .."%)", nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["Rested XP"], ("%s (%s%%)"):format(GroupDigits(rest), floor(rest / max * 1000 ) / 10), nil, nil, nil, 1, 1, 1)
 			end
 			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+			tooltip:AddLine(" ")
 			tooltip:AddDoubleLine(L["XP To Level %d"]:format(MAX_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - (xpToCurrentLevel + cur)), nil, nil, nil, 1, 1, 1)
 		end
 		needblank = true
@@ -174,7 +173,7 @@ function Progress:UpdateTooltip(tooltip)
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
 		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		tooltip:AddDoubleLine(L["Progress"], GroupDigits(cur - min).."/"..GroupDigits(max - min), nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Progress"], ("%s/%s"):format(GroupDigits(cur - min), GroupDigits(max - min)), nil, nil, nil, 1, 1, 1)
 		if standing < 8 then
 			tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 		end
