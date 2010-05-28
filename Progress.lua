@@ -7,6 +7,13 @@
 	See README for license terms and additional information.
 ----------------------------------------------------------------------]]
 
+local defaults = {
+	forceRep = false,		-- Show reputation in the tooltip even if below max level
+	friendlyNumbers = true,	-- Adds digit grouping to large numbers
+	longText = false,		-- Show current level or watched faction on plugin text [NYI]
+	shortFactions = true,	-- Abbreviate name shown with longText [NYI]
+}
+
 local STANDING_COLOR = {
 	"|cffcc2222", -- Hated
 	"|cffff0000", -- Hostile
@@ -108,9 +115,9 @@ for i = 1, MAX_LEVEL - 1 do
 end
 
 local xpToCurrentLevel = 0
-local shortFactions = {}
+local shortFactions = { }
 
-local L = setmetatable(PROGRESS_LOCALS or {}, { __index = function(t, k) rawset(t, k, k) return k end })
+local L = setmetatable(PROGRESS_LOCALS or { }, { __index = function(t, k) rawset(t, k, k) return k end })
 local Progress = CreateFrame("Frame")
 
 local function Debug(lvl, str, ...)
@@ -165,7 +172,7 @@ function Progress:UpdateTooltip(tooltip)
 		end
 		needblank = true
 	end
-	if myLevel == MAX_LEVEL or db.forceRep then
+	if myLevel == MAX_LEVEL or self.db.forceRep then
 		if needblank then
 			tooltip:AddLine(" ")
 			needblank = nil
@@ -188,18 +195,12 @@ function Progress:ADDON_LOADED(addon)
 
 	if not ProgressDB then
 		ProgressDB = defaults
-		db = ProgressDB
+		self.db = ProgressDB
 	else
-		db = ProgressDB
-		local defaults = {
-			forceRep = false,		-- Show reputation in the tooltip even if below max level
-			friendlyNumbers = true,	-- Adds digit grouping to large numbers
-			longText = false,		-- Show current level or watched faction on plugin text [NYI]
-			shortFactions = true,	-- Abbreviate name shown with longText [NYI]
-		}
+		self.db = ProgressDB
 		for k, v in pairs(defaults) do
-			if type(db[k]) ~= type(defaults[k]) then
-				db[k] = v
+			if type(self.db[k]) ~= type(defaults[k]) then
+				self.db[k] = v
 			end
 		end
 	end
@@ -253,7 +254,7 @@ function Progress:PLAYER_LOGIN()
 		name, _, _, _, _, _, _, _, isHeader, _, isWatched = GetFactionInfo(i)
 		if not isHeader then
 			if isWatched then
-				db.watch = i
+				self.db.watch = i
 
 				local shortbase = name:gsub("^"..L["The"], "")
 				local words = 0
@@ -279,8 +280,18 @@ function Progress:PLAYER_LOGIN()
 	self.UPDATE_EXHAUSTION = self.UpdateText
 	self.PLAYER_XP_UPDATE = self.UpdateText
 
+	self:RegisterEvent("PLAYER_LOGOUT")
+
 	self:UnregisterEvent("PLAYER_LOGIN")
 	self.PLAYER_LOGIN = nil
+end
+
+function Progress:PLAYER_LOGOUT()
+	for k, v in pairs(self.db) do
+		if defaults[k] == v then
+			self.db[k] = nil
+		end
+	end
 end
 
 function Progress:PLAYER_LEVEL_UP()
