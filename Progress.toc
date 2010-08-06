@@ -3,7 +3,7 @@
 
 ## Title: Progress
 ## Notes: DataBroker plugin for basic experience and reputation status.
-## X-Copyright: Copyright ©2009 Alyssa "Phanx" Kinley
+## X-Copyright: Copyright © 2008–2010 Phanx.
 ## X-License: Do not redistribute. See README for full license terms.
 ## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
 
