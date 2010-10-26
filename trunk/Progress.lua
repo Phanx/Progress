@@ -105,6 +105,11 @@ local XP_PER_LEVEL = { -- How much XP needed to complete each level
 	1637400,
 	1653900,
 	1670800,
+	1600000, -- 80
+	1700000,
+	6400000,
+	6500000,
+	6600000, -- 85
 }
 
 local MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]
@@ -207,7 +212,7 @@ function Progress:ADDON_LOADED(addon)
 
 	self:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
-	
+
 	if IsLoggedIn() then
 		self:PLAYER_LOGIN()
 	else
