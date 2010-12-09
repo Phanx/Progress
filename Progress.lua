@@ -105,11 +105,11 @@ local XP_PER_LEVEL = { -- How much XP needed to complete each level
 	1637400,
 	1653900,
 	1670800,
-	1600000, -- 80
-	1700000,
-	6400000,
-	6500000,
-	6600000, -- 85
+	1686300, -- 80
+	2121500,
+	4004000,
+	5203400,
+	9165100, -- 85
 }
 
 local MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]
