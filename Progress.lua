@@ -1,10 +1,10 @@
 --[[--------------------------------------------------------------------
 	Progress
-	Experience and reputation plugin for any DataBroker addon.
+	DataBroker plugin to show experience and reputation.
 	by Phanx < addons@phanx.net >
-	http://www.wowinterface.com/downloads/info11032-Progress.html
-	Copyright © 2008–2009 Alyssa "Phanx" Kinley
-	See README for license terms and additional information.
+	Copyright © 2008–2010 Phanx. Some rights reserved. See LICENSE.txt for details.
+	http://www.wowinterface.com/downloads/info6323-PhanxChat.html
+	http://wow.curse.com/downloads/wow-addons/details/phanxchat.aspx
 ----------------------------------------------------------------------]]
 
 local defaults = {
