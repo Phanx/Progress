@@ -4,7 +4,7 @@
 ## Title: Progress
 ## Notes: DataBroker plugin for basic experience and reputation status.
 ## X-Copyright: Copyright © 2008–2010 Phanx.
-## X-License: Public Domain
+## X-License: Some rights reserved. See LICENSE.txt for details.
 ## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
 
 ## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
