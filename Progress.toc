@@ -2,9 +2,12 @@
 ## Version: 4.0.3.wowi:revision
 
 ## Title: Progress
-## Notes: DataBroker plugin for basic experience and reputation status.
-## Author: Phanx
-## X-Email: addons@phanx.net
+## Notes: Experience and reputation in a simple format on any DataBroker display.
+## Notes-esES: Experiencia y reputación en un formato sencillo en cualquier pantalla DataBroker.
+## Notes-esMX: Experiencia y reputación en un formato sencillo en cualquier pantalla DataBroker.
+
+## Author: Phanx, Akkorian
+## X-Email: addons@phanx.net, akkorian@hotmail.com
 ## X-Copyright: Copyright © 2008–2010 Phanx.
 ## X-License: Some rights reserved. See LICENSE.txt for details.
 ## X-CompatibleLocales: deDE, enUS, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW

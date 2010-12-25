@@ -11,20 +11,24 @@
 local _, ns = ...
 if not ns then ns = { } _G.Progress = ns end -- WoW China
 
+local L = { }
+ns.L = L
+
 --[[--------------------------------------------------------------------
 	deDE | Deutsch | German
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "deDE" then
-	L["Current Level"] = ""
+	L["Progress"] = ""
+	L["Level"] = ""
 	L["Current XP"] = ""
 	L["Rested XP"] = ""
 	L["XP To Next Level"] = ""
 	L["XP To Level %d"] = ""
 	L["Faction"] = ""
 	L["Standing"] = ""
-	L["Progress"] = ""
+	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
 end
@@ -36,16 +40,17 @@ end
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "esES" or GetLocale() == "esMX" then
-	L["Current Level"] = "Nivel actual"
+	L["Progress"] = "Progreso"
+	L["Level"] = "Nivel"
 	L["Current XP"] = "PE actual"
 	L["Rested XP"] = "PE descansado"
 	L["XP To Next Level"] = "PE al siguiente nivel"
 	L["XP To Level %d"] = "PE al nivel %d"
 	L["Faction"] = "Facción"
 	L["Standing"] = "Prestigio"
-	L["Progress"] = "Progreso"
-	L["To Next Standing"] = "Al siguiente nivel de prestigio"
-	L["Click to toggle the reputation panel."] = "Haz clic para mostrar/ocultar el panel de reputación."
+	L["Reputation"] = "Reputación"
+	L["To Next Standing"] = "Al siguiente prestigio"
+	L["Click to toggle the reputation panel."] = "Haz clic para mostrar/ocultar\nel panel de reputación."
 end
 
 --[[--------------------------------------------------------------------
@@ -54,14 +59,15 @@ end
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "frFR" then
-	L["Current Level"] = ""
+	L["Progress"] = ""
+	L["Level"] = ""
 	L["Current XP"] = ""
 	L["Rested XP"] = ""
 	L["XP To Next Level"] = ""
 	L["XP To Level %d"] = ""
 	L["Faction"] = ""
 	L["Standing"] = ""
-	L["Progress"] = ""
+	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
 end
@@ -72,14 +78,15 @@ end
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "ruRU" then
-	L["Current Level"] = ""
+	L["Progress"] = ""
+	L["Level"] = ""
 	L["Current XP"] = ""
 	L["Rested XP"] = ""
 	L["XP To Next Level"] = ""
 	L["XP To Level %d"] = ""
 	L["Faction"] = ""
 	L["Standing"] = ""
-	L["Progress"] = ""
+	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
 end
@@ -90,14 +97,15 @@ end
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "koKR" then
-	L["Current Level"] = ""
+	L["Progress"] = ""
+	L["Level"] = ""
 	L["Current XP"] = ""
 	L["Rested XP"] = ""
 	L["XP To Next Level"] = ""
 	L["XP To Level %d"] = ""
 	L["Faction"] = ""
 	L["Standing"] = ""
-	L["Progress"] = ""
+	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
 end
@@ -108,14 +116,15 @@ end
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "zhCN" then
-	L["Current Level"] = ""
+	L["Progress"] = ""
+	L["Level"] = ""
 	L["Current XP"] = ""
 	L["Rested XP"] = ""
 	L["XP To Next Level"] = ""
 	L["XP To Level %d"] = ""
 	L["Faction"] = ""
 	L["Standing"] = ""
-	L["Progress"] = ""
+	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
 end
@@ -126,14 +135,15 @@ end
 ----------------------------------------------------------------------]]
 
 if GetLocale() == "zhTW" then
-	L["Current Level"] = ""
+	L["Progress"] = ""
+	L["Level"] = ""
 	L["Current XP"] = ""
 	L["Rested XP"] = ""
 	L["XP To Next Level"] = ""
 	L["XP To Level %d"] = ""
 	L["Faction"] = ""
 	L["Standing"] = ""
-	L["Progress"] = ""
+	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
 end

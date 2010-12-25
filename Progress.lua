@@ -11,6 +11,8 @@
 local _, ns = ...
 if not ns then ns = _G.Progress end -- WoW China
 
+------------------------------------------------------------------------
+
 local L = setmetatable(ns.L or { }, { __index = function(t, k)
 	if k == nil then return "" end
 	local v = tostring(k)
@@ -23,12 +25,16 @@ for k, v in pairs(L) do -- clean up missing translations
 	end
 end
 
+------------------------------------------------------------------------
+
 local defaults = {
 	forceRep = false,		-- Show reputation in the tooltip even if below max level
 	friendlyNumbers = true,	-- Adds digit grouping to large numbers
 	longText = false,		-- Show current level or watched faction on plugin text [NYI]
 	shortFactions = true,	-- Abbreviate name shown with longText [NYI]
 }
+
+------------------------------------------------------------------------
 
 local STANDING_COLOR = {
 	"|cffcc2222", -- Hated
@@ -40,6 +46,8 @@ local STANDING_COLOR = {
 	"|cff00ffcc", -- Revered
 	"|cff00ffff", -- Exalted
 }
+
+------------------------------------------------------------------------
 
 local XP_PER_LEVEL = { -- How much XP needed to complete each level
 	400,
@@ -128,6 +136,8 @@ local XP_PER_LEVEL = { -- How much XP needed to complete each level
 	9165100, -- 85
 }
 
+------------------------------------------------------------------------
+
 local MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]
 
 local XP_TO_MAX_LEVEL = 0
@@ -138,7 +148,17 @@ end
 local xpToCurrentLevel = 0
 local shortFactions = { }
 
+local math_floor = math.floor
+local math_min = math.min
+local string_format = string.format
+
+------------------------------------------------------------------------
+
 local Progress = CreateFrame("Frame")
+Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
+Progress:RegisterEvent("ADDON_LOADED")
+
+------------------------------------------------------------------------
 
 local function Debug(lvl, str, ...)
 	if lvl > 0 then return end
@@ -147,6 +167,8 @@ local function Debug(lvl, str, ...)
 	end
 	DEFAULT_CHAT_FRAME:AddMessage("|cffff7f7fProgress:|r "..str)
 end
+
+------------------------------------------------------------------------
 
 local groupmark = "%1" .. ( ( GetLocale():match("^en") or GetLocale() == "koKR" ) and "," or " " )
 
@@ -159,18 +181,20 @@ local function GroupDigits(num)
 	return ("%s%s%s%s"):format(neg, left, mid:reverse():gsub("(%d%d%d)", groupmark):reverse(), right)
 end
 
+------------------------------------------------------------------------
+
 function Progress:UpdateText()
 	Debug(2, "UpdateText")
 	if UnitLevel("player") < MAX_LEVEL then
 		local cur, max = UnitXP("player"), UnitXPMax("player")
-		self.obj.text = ("%s (%d%%)"):format(GroupDigits(cur - max), math.floor(cur / max * 100))
-	elseif GetWatchedFactionInfo() then
+		self.obj.text = ("%s (%d%%)"):format(GroupDigits(max - cur), math.floor(cur / max * 100 + 0.5))
+	else
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		if name then
-			self.obj.text = ("%s%s (%d%%)"):format(STANDING_COLOR[standing], GroupDigits((max - min) - (cur - min)), math.floor((cur - min) / (max - min) * 100))
+			self.obj.text = ("%s%s (%d%%)|r"):format(STANDING_COLOR[standing], GroupDigits((max - min) - (cur - min)), math_floor((cur - min) / (max - min) * 100))
+		else
+			self.obj.text = L["Progress"]
 		end
-	else
-		self.obj.text = "Progress"
 	end
 end
 
@@ -184,9 +208,9 @@ function Progress:UpdateTooltip(tooltip)
 		tooltip:AddDoubleLine(L["Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			tooltip:AddDoubleLine(L["Experience"], ("%s/%s (%d%%)"):format(GroupDigits(cur), GroupDigits(max), floor(cur / max * 100)), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Current XP"], ("%s / %s (%d%%)"):format(GroupDigits(cur), GroupDigits(max), math_floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			if rest then
-				tooltip:AddDoubleLine(L["Rested XP"], ("%s (%s%%)"):format(GroupDigits(rest), floor(rest / max * 1000 ) / 10), nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["Rested XP"], ("%s (%s%%)"):format(GroupDigits(rest), math_floor(rest / max * 1000 / 10 + 0.5)), nil, nil, nil, 1, 1, 1)
 			end
 			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 			tooltip:AddLine(" ")
@@ -202,7 +226,7 @@ function Progress:UpdateTooltip(tooltip)
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
 		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		tooltip:AddDoubleLine(L["Reputation"], ("%s/%s"):format(GroupDigits(cur - min), GroupDigits(max - min)), nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Reputation"], ("%s / %s (%d%%)"):format(GroupDigits(cur - min), GroupDigits(max - min), math_floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 		if standing < 8 then
 			tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 		end
@@ -211,6 +235,8 @@ function Progress:UpdateTooltip(tooltip)
 	tooltip:AddLine(L["Click to toggle the reputation panel."], 0.2, 1, 0.2)
 	tooltip:Show()
 end
+
+------------------------------------------------------------------------
 
 function Progress:ADDON_LOADED(addon)
 	if addon ~= "Progress" then return end
@@ -257,45 +283,6 @@ function Progress:PLAYER_LOGIN()
 		self:RegisterEvent("PLAYER_LEVEL_UP")
 		hooksecurefunc("SetWatchedFactionIndex", function() return self:UpdateText() end)
 	end
-	--[[
-	local name, isHeader, isCollapsed, isWatched
-	local n = GetNumFactions()
-	for i = 1, n do
-		name, _, _, _, _, _, _, _, isHeader, isCollapsed = GetFactionInfo(i)
-		if isHeader then
-			if name == L["Inactive"] then
-				do break end
-			elseif isCollapsed then
-				ExpandFactionHeader(i)
-				n = GetNumFactions()
-				i = 1
-			end
-		end
-	end
-	for i = 1, n do
-		name, _, _, _, _, _, _, _, isHeader, _, isWatched = GetFactionInfo(i)
-		if not isHeader then
-			if isWatched then
-				self.db.watch = i
-
-				local shortbase = name:gsub("^"..L["The"], "")
-				local words = 0
-				for word in shortbase:gmatch("[%s]+") do
-					words = words + 1
-				end
-				if words == 1 then
-					shortFactions[name] = shortbase:sub(1, 4):gsub("[^%a]", "")
-				else
-					local shortname = ""
-					for word in shortbase:gmatch("[^s%-']+") do
-						shortname = shortname..word:sub(1, 1)
-					end
-					shortFactions[name] = shortname
-				end
-			end
-		end
-	end
-	]]
 	self:UpdateText()
 
 	self.UPDATE_FACTION = self.UpdateText
@@ -334,6 +321,3 @@ function Progress:PLAYER_LEVEL_UP()
 		end
 	end
 end
-
-Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
-Progress:RegisterEvent("ADDON_LOADED")
