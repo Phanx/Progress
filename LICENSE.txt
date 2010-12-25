@@ -1,8 +1,8 @@
 Progress
 DataBroker plugin to show experience and reputation.
 by Phanx < addons@phanx.net >
-http://www.wowinterface.com/downloads/info6323-PhanxChat.html
-http://wow.curse.com/downloads/wow-addons/details/phanxchat.aspx
+http://www.wowinterface.com/downloads/info11032-Progress.html
+http://wow.curse.com/downloads/wow-addons/details/progress.aspx
 
 Copyright © 2008–2010 Phanx
 

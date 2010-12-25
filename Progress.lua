@@ -2,10 +2,26 @@
 	Progress
 	DataBroker plugin to show experience and reputation.
 	by Phanx < addons@phanx.net >
+	Currently maintained by Akkorian < akkorian@hotmail.com >
 	Copyright © 2008–2010 Phanx. Some rights reserved. See LICENSE.txt for details.
-	http://www.wowinterface.com/downloads/info6323-PhanxChat.html
-	http://wow.curse.com/downloads/wow-addons/details/phanxchat.aspx
+	http://www.wowinterface.com/downloads/info11032-Progress.html
+	http://wow.curse.com/downloads/wow-addons/details/progress.aspx
 ----------------------------------------------------------------------]]
+
+local _, ns = ...
+if not ns then ns = _G.Progress end -- WoW China
+
+local L = setmetatable(ns.L or { }, { __index = function(t, k)
+	if k == nil then return "" end
+	local v = tostring(k)
+	t[k] = v
+	return v
+end })
+for k, v in pairs(L) do -- clean up missing translations
+	if v == "" then
+		L[k] = k
+	end
+end
 
 local defaults = {
 	forceRep = false,		-- Show reputation in the tooltip even if below max level
@@ -122,7 +138,6 @@ end
 local xpToCurrentLevel = 0
 local shortFactions = { }
 
-local L = setmetatable(PROGRESS_LOCALS or { }, { __index = function(t, k) rawset(t, k, k) return k end })
 local Progress = CreateFrame("Frame")
 
 local function Debug(lvl, str, ...)
@@ -133,13 +148,15 @@ local function Debug(lvl, str, ...)
 	DEFAULT_CHAT_FRAME:AddMessage("|cffff7f7fProgress:|r "..str)
 end
 
+local groupmark = "%1" .. ( ( GetLocale():match("^en") or GetLocale() == "koKR" ) and "," or " " )
+
 local function GroupDigits(num)
 	if not num then return 0 end
 	if abs(num) < 10000 then return num end
 
 	local neg = num < 0 and "-" or ""
 	local left, mid, right = tostring(abs(num)):match("^([^%d]*%d)(%d*)(.-)$")
-	return ("%s%s%s%s"):format(neg, left, mid:reverse():gsub("(%d%d%d)", "%1,"):reverse(), right)
+	return ("%s%s%s%s"):format(neg, left, mid:reverse():gsub("(%d%d%d)", groupmark):reverse(), right)
 end
 
 function Progress:UpdateText()
@@ -164,10 +181,10 @@ function Progress:UpdateTooltip(tooltip)
 	local needblank
 	local myLevel = UnitLevel("player")
 	if myLevel < MAX_LEVEL then
-		tooltip:AddDoubleLine(L["Current Level"], myLevel, nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
-			tooltip:AddDoubleLine(L["Current XP"], ("%s/%s (%d%%)"):format(GroupDigits(cur), GroupDigits(max), floor(cur / max * 100)), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Experience"], ("%s/%s (%d%%)"):format(GroupDigits(cur), GroupDigits(max), floor(cur / max * 100)), nil, nil, nil, 1, 1, 1)
 			if rest then
 				tooltip:AddDoubleLine(L["Rested XP"], ("%s (%s%%)"):format(GroupDigits(rest), floor(rest / max * 1000 ) / 10), nil, nil, nil, 1, 1, 1)
 			end
@@ -185,13 +202,13 @@ function Progress:UpdateTooltip(tooltip)
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
 		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		tooltip:AddDoubleLine(L["Progress"], ("%s/%s"):format(GroupDigits(cur - min), GroupDigits(max - min)), nil, nil, nil, 1, 1, 1)
+		tooltip:AddDoubleLine(L["Reputation"], ("%s/%s"):format(GroupDigits(cur - min), GroupDigits(max - min)), nil, nil, nil, 1, 1, 1)
 		if standing < 8 then
 			tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 		end
 	end
 	tooltip:AddLine(" ")
-	tooltip:AddLine(L["Click to open the reputation panel."], 0.2, 1, 0.2)
+	tooltip:AddLine(L["Click to toggle the reputation panel."], 0.2, 1, 0.2)
 	tooltip:Show()
 end
 
@@ -224,8 +241,8 @@ function Progress:PLAYER_LOGIN()
 	self.obj = LibStub("LibDataBroker-1.1"):NewDataObject("Progress", {
 		type  = "data source",
 		icon  = "Interface\\Icons\\INV_Misc_PocketWatch_02",
-		label = "Progress",
-		text  = "Progress",
+		label = L["Progress"],
+		text  = UNKNOWN,
 		OnClick = function() ToggleCharacter("ReputationFrame") end,
 		OnTooltipShow = function(tip) return Progress:UpdateTooltip(tip) end,
 	})
