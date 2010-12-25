@@ -2,8 +2,8 @@
 
 * by Phanx < addons@phanx.net >
 * Copyright © 2008–2010 Phanx. Some rights reserved. See LICENSE.txt for details.
-* http://www.wowinterface.com/downloads/info6323-PhanxChat.html
-* http://wow.curse.com/downloads/wow-addons/details/phanxchat.aspx
+* http://www.wowinterface.com/downloads/info11032-Progress.html
+* http://wow.curse.com/downloads/wow-addons/details/progress.aspx
 
 
 ## Description

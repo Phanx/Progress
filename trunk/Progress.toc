@@ -3,26 +3,25 @@
 
 ## Title: Progress
 ## Notes: DataBroker plugin for basic experience and reputation status.
-## X-Copyright: Copyright © 2008–2010 Phanx.
-## X-License: Some rights reserved. See LICENSE.txt for details.
-## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
-
-## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
-## X-Localizations: enUS
-
 ## Author: Phanx
 ## X-Email: addons@phanx.net
-## X-Credits: Inspired by Wobin's FuBar_FuXPFu.
+## X-Copyright: Copyright © 2008–2010 Phanx.
+## X-License: Some rights reserved. See LICENSE.txt for details.
+## X-CompatibleLocales: deDE, enUS, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
+## X-Localizations: enUS, esES, esMX
+## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
+## X-Curse-Project-ID: progress
+## X-WoWI-ID: 11032
 
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Always: delayed
 
 ## OptionalDependencies: LibDataBroker-1.1
-
 ## SavedVariables: ProgressDB
 
 Libs\LibStub\LibStub.lua
 Libs\CallbackHandler-1.0\CallbackHandler-1.0.lua
 Libs\LibDataBroker-1.1\LibDataBroker-1.1.lua
 
+Localization.lua
 Progress.lua
