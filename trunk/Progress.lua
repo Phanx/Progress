@@ -219,16 +219,18 @@ function Progress:UpdateTooltip(tooltip)
 		needblank = true
 	end
 	if myLevel == MAX_LEVEL or self.db.forceRep then
-		if needblank then
-			tooltip:AddLine(" ")
-			needblank = nil
-		end
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
-		tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
-		tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing].._G["FACTION_STANDING_LABEL"..standing].."|r")
-		tooltip:AddDoubleLine(L["Reputation"], ("%s / %s (%d%%)"):format(GroupDigits(cur - min), GroupDigits(max - min), math_floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
-		if standing < 8 then
-			tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+		if name then
+			if needblank then
+				tooltip:AddLine(" ")
+				needblank = nil
+			end
+			tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing] .. _G["FACTION_STANDING_LABEL" .. standing] .. "|r")
+			tooltip:AddDoubleLine(L["Reputation"], ("%s / %s (%d%%)"):format(GroupDigits(cur - min), GroupDigits(max - min), math_floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
+			if standing < 8 then
+				tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+			end
 		end
 	end
 	tooltip:AddLine(" ")
