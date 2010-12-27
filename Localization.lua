@@ -8,6 +8,9 @@
 	http://wow.curse.com/downloads/wow-addons/details/progress.aspx
 ----------------------------------------------------------------------]]
 
+local locale = GetLocale()
+if locale:match("^en") then return end
+
 local _, ns = ...
 if not ns then ns = { } _G.Progress = ns end -- WoW China
 
@@ -19,7 +22,7 @@ ns.L = L
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "deDE" then
+if locale == "deDE" then
 	L["Progress"] = ""
 	L["Level"] = ""
 	L["Current XP"] = ""
@@ -31,7 +34,7 @@ if GetLocale() == "deDE" then
 	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
-end
+return end
 
 --[[--------------------------------------------------------------------
 	esES | Español (EU) | Spanish (Europe)
@@ -39,7 +42,7 @@ end
 	Last updated: 2010-12-23 by Akkorian
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "esES" or GetLocale() == "esMX" then
+if locale == "esES" or GetLocale() == "esMX" then
 	L["Progress"] = "Progreso"
 	L["Level"] = "Nivel"
 	L["Current XP"] = "PE actual"
@@ -51,14 +54,14 @@ if GetLocale() == "esES" or GetLocale() == "esMX" then
 	L["Reputation"] = "Reputación"
 	L["To Next Standing"] = "Al siguiente prestigio"
 	L["Click to toggle the reputation panel."] = "Haz clic para mostrar/ocultar\nel panel de reputación."
-end
+return end
 
 --[[--------------------------------------------------------------------
 	frFR | Français | French
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "frFR" then
+if locale == "frFR" then
 	L["Progress"] = ""
 	L["Level"] = ""
 	L["Current XP"] = ""
@@ -70,14 +73,14 @@ if GetLocale() == "frFR" then
 	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
-end
+return end
 
 --[[--------------------------------------------------------------------
 	ruRU | Русский | Russian
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "ruRU" then
+if locale == "ruRU" then
 	L["Progress"] = ""
 	L["Level"] = ""
 	L["Current XP"] = ""
@@ -89,14 +92,14 @@ if GetLocale() == "ruRU" then
 	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
-end
+return end
 
 --[[--------------------------------------------------------------------
 	koKR | 한국어 | Korean
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "koKR" then
+if locale == "koKR" then
 	L["Progress"] = ""
 	L["Level"] = ""
 	L["Current XP"] = ""
@@ -108,14 +111,14 @@ if GetLocale() == "koKR" then
 	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
-end
+return end
 
 --[[--------------------------------------------------------------------
 	zhCN | 简体中文 | Simplified Chinese
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "zhCN" then
+if locale == "zhCN" then
 	L["Progress"] = ""
 	L["Level"] = ""
 	L["Current XP"] = ""
@@ -127,14 +130,14 @@ if GetLocale() == "zhCN" then
 	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
-end
+return end
 
 --[[--------------------------------------------------------------------
 	zhTW | 正體中文 | Traditional Chinese
 	Last updated: YYYY-MM-DD by UNKNOWN < CONTACT INFO >
 ----------------------------------------------------------------------]]
 
-if GetLocale() == "zhTW" then
+if locale == "zhTW" then
 	L["Progress"] = ""
 	L["Level"] = ""
 	L["Current XP"] = ""
@@ -146,4 +149,4 @@ if GetLocale() == "zhTW" then
 	L["Reputation"] = ""
 	L["To Next Standing"] = ""
 	L["Click to toggle the reputation panel."] = ""
-end
+return end
