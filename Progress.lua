@@ -234,7 +234,7 @@ function Progress:UpdateTooltip(tooltip)
 		end
 	end
 	tooltip:AddLine(" ")
-	tooltip:AddLine(L["Click to toggle the reputation panel."], 0.2, 1, 0.2)
+	tooltip:AddLine(L["Click to toggle the reputation panel."])
 	tooltip:Show()
 end
 
