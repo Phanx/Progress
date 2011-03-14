@@ -9,7 +9,6 @@
 ----------------------------------------------------------------------]]
 
 local _, ns = ...
-if not ns then ns = _G.Progress end -- WoW China
 
 ------------------------------------------------------------------------
 
@@ -19,11 +18,17 @@ local L = setmetatable(ns.L or { }, { __index = function(t, k)
 	t[k] = v
 	return v
 end })
+
 for k, v in pairs(L) do -- clean up missing translations
 	if v == "" then
 		L[k] = k
 	end
 end
+
+L["Level"] = LEVEL
+L["Faction"] = FACTION
+L["Standing"] = STANDING
+L["Reputation"] = REPUTATION
 
 ------------------------------------------------------------------------
 
@@ -45,6 +50,28 @@ local STANDING_COLOR = {
 	"|cff00ff88", -- Honored
 	"|cff00ffcc", -- Revered
 	"|cff00ffff", -- Exalted
+}
+
+local STANDING_LABEL_MALE = {
+	FACTION_STANDING_LABEL1,
+	FACTION_STANDING_LABEL2,
+	FACTION_STANDING_LABEL3,
+	FACTION_STANDING_LABEL4,
+	FACTION_STANDING_LABEL5,
+	FACTION_STANDING_LABEL6,
+	FACTION_STANDING_LABEL7,
+	FACTION_STANDING_LABEL8,
+}
+
+local STANDING_LABEL_FEMALE = {
+	FACTION_STANDING_LABEL1_FEMALE,
+	FACTION_STANDING_LABEL2_FEMALE,
+	FACTION_STANDING_LABEL3_FEMALE,
+	FACTION_STANDING_LABEL4_FEMALE,
+	FACTION_STANDING_LABEL5_FEMALE,
+	FACTION_STANDING_LABEL6_FEMALE,
+	FACTION_STANDING_LABEL7_FEMALE,
+	FACTION_STANDING_LABEL8_FEMALE,
 }
 
 ------------------------------------------------------------------------
@@ -199,7 +226,7 @@ function Progress:UpdateText()
 end
 
 function Progress:UpdateTooltip(tooltip)
-	tooltip:AddLine(L["Progress"])
+	tooltip:AddLine(L["Progress"], 1, 1, 1)
 	tooltip:AddLine(" ")
 
 	local needblank
@@ -226,8 +253,8 @@ function Progress:UpdateTooltip(tooltip)
 				needblank = nil
 			end
 			tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
-			tooltip:AddDoubleLine(L["Standing"], STANDING_COLOR[standing] .. _G["FACTION_STANDING_LABEL" .. standing] .. "|r")
-			tooltip:AddDoubleLine(L["Reputation"], ("%s / %s (%d%%)"):format(GroupDigits(cur - min), GroupDigits(max - min), math_floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Standing"], format("%s%s|r", STANDING_COLOR[standing], UnitSex("player") == 3 and STANDING_LABEL_FEMALE[standing] or STANDING_LABEL_MALE[standing]))
+			tooltip:AddDoubleLine(L["Reputation"], format("%s / %s (%d%%)", GroupDigits(cur - min), GroupDigits(max - min), math_floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			if standing < 8 then
 				tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 			end
