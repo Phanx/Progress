@@ -33,10 +33,13 @@ characters below the maximum level.
 Localization
 ------------
 
-Compatible with: en, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
-Translated into: en
+Compatible with English, Deutsch, Español, Français, Русский, 한국어, 简体中文,
+and 正體中文 game clients.
 
-If you can help translate for any locale, please contact me.
+Translated into English, Deutsch, Español, Français, and Русский. To add
+or update translations for any locale, see the CurseForge project page:
+
+http://wow.curseforge.com/addons/progress/localization/
 
 
 Feedback
