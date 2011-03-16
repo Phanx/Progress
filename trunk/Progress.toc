@@ -3,6 +3,9 @@
 
 ## Title: Progress
 ## Notes: Experience and reputation in a simple format on any DataBroker display.
+## Notes-esES: Simplemente mostrar experiencia y reputación en cualquier accesorio de visualización DataBroker.
+## Notes-esMX: Simplemente mostrar experiencia y reputación en cualquier accesorio de visualización DataBroker.
+
 ## Author: Phanx, Akkorian
 ## X-Email: akkorian@hotmail.com
 ## X-Copyright: Copyright © 2008–2011 Phanx.
