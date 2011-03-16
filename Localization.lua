@@ -16,7 +16,7 @@ local L = { }
 ns.L = L
 
 --[[--------------------------------------------------------------------
-	deDE | Deutsch | German
+	deDE | German | Deutsch
 	Last updated: 2011-03-14 by Akkorian
 ----------------------------------------------------------------------]]
 
@@ -31,8 +31,8 @@ if GAME_LOCALE == "deDE" then
 return end
 
 --[[--------------------------------------------------------------------
-	esES/esMX | Español (EU/AL) | Spanish (Europe/Latin America)
-	Last updated: 2010-12-23 by Akkorian
+	esES/esMX | Spanish (Europe/Latin America) | Español (Europa/América Latina)
+	Last updated: 2011-03-14 by Akkorian
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "esES" or GetLocale() == "esMX" then
@@ -46,7 +46,7 @@ if GAME_LOCALE == "esES" or GetLocale() == "esMX" then
 return end
 
 --[[--------------------------------------------------------------------
-	frFR | Français | French
+	frFR | French | Français
 	Last updated: 2011-03-14 by Akkorian
 ----------------------------------------------------------------------]]
 
@@ -61,7 +61,7 @@ if GAME_LOCALE == "frFR" then
 return end
 
 --[[--------------------------------------------------------------------
-	ruRU | Русский | Russian
+	ruRU | Russian | Русский
 	Last updated: 2011-03-14 by Akkorian
 ----------------------------------------------------------------------]]
 
@@ -76,7 +76,7 @@ if GAME_LOCALE == "ruRU" then
 return end
 
 --[[--------------------------------------------------------------------
-	koKR | 한국어 | Korean
+	koKR | Korean | 한국어
 	Last updated: YYYY-MM-DD by UNKNOWN
 ----------------------------------------------------------------------]]
 
@@ -91,7 +91,7 @@ if GAME_LOCALE == "koKR" then
 return end
 
 --[[--------------------------------------------------------------------
-	zhCN | 简体中文 | Simplified Chinese
+	zhCN | Simplified Chinese | 简体中文
 	Last updated: YYYY-MM-DD by UNKNOWN
 ----------------------------------------------------------------------]]
 
@@ -106,7 +106,7 @@ if GAME_LOCALE == "zhCN" then
 return end
 
 --[[--------------------------------------------------------------------
-	zhTW | 繁體中文 | Traditional Chinese
+	zhTW | Traditional Chinese | 繁體中文
 	Last updated: YYYY-MM-DD by UNKNOWN
 ----------------------------------------------------------------------]]
 
