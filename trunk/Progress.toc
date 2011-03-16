@@ -1,5 +1,5 @@
-## Interface: 40000
-## Version: 4.0.3.wowi:revision
+## Interface: 40100
+## Version: 4.1.0.wowi:revision
 
 ## Title: Progress
 ## Notes: Experience and reputation in a simple format on any DataBroker display.
@@ -7,8 +7,8 @@
 ## X-Email: akkorian@hotmail.com
 ## X-Copyright: Copyright © 2008–2011 Phanx.
 ## X-License: Some rights reserved. See LICENSE.txt for details.
-## X-CompatibleLocales: deDE, enUS, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
-## X-Localizations: enUS, esES, esMX
+## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, koKR, ruRU, zhCN, zhTW
+## X-Localizations: enUS, deDE, esES, esMX, frFR, ruRU
 ## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
 ## X-Curse-Project-ID: progress
 ## X-WoWI-ID: 11032
