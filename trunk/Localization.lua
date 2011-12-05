@@ -61,6 +61,21 @@ if GAME_LOCALE == "frFR" then
 return end
 
 --[[--------------------------------------------------------------------
+	ptBR | Portuguese (Brazil) | Português (Brasil)
+	Last updated: 2011-12-05 by Phanx
+----------------------------------------------------------------------]]
+
+if GAME_LOCALE == "ptBR" then
+	L["Progress"] = "Progresso"
+	L["Current XP"] = "EXP atual"
+	L["Rested XP"] = "EXP descansando"
+	L["XP To Next Level"] = "EXP para nível seguinte"
+	L["XP To Level %d"] = "EXP para nível %d"
+	L["To Next Standing"] = "Rep. a situação próxima"
+	L["Click to toggle the reputation panel."] = "Clique para mostrar/ocultar o painel de reputação."
+return end
+
+--[[--------------------------------------------------------------------
 	ruRU | Russian | Русский
 	Last updated: 2011-03-14 by Akkorian
 ----------------------------------------------------------------------]]

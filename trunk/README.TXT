@@ -2,7 +2,6 @@ Progress
 ========
 
 * Written by Phanx <addons@phanx.net>
-* Maintained by Akkorian <akkorian@hotmail.com>
 * Copyright © 2008–2011 Phanx. Some rights reserved. See LICENSE.txt for details.
 * http://www.wowinterface.com/downloads/info11032-Progress.html
 * http://wow.curse.com/downloads/wow-addons/details/progress.aspx
@@ -33,8 +32,8 @@ characters below the maximum level.
 Localization
 ------------
 
-Compatible with English, Deutsch, Español, Français, Русский, 한국어, 简体中文,
-and 正體中文 game clients.
+Compatible with English, Deutsch, Español, Français, Português, Русский,
+한국어, 简体中文, and 正體中文 game clients.
 
 Translated into English, Deutsch, Español, Français, and Русский. To add
 or update translations for any locale, see the CurseForge project page:
@@ -50,4 +49,4 @@ request features. Use the comment system only for general questions
 or comments.
 
 If you need to contact me privately, you may do by private message
-on either download site, or by email at <akkorian@hotmail.com>.
+on either download site, or by email at <addons@phanx.net>.
