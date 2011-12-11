@@ -2,7 +2,6 @@
 	Progress
 	DataBroker plugin to show experience and reputation.
 	Written by Phanx <addons@phanx.net>
-	Maintained by Akkorian <akkorian@hotmail.com>
 	Copyright © 2008–2011 Phanx. Some rights reserved. See LICENSE.txt for details.
 	http://www.wowinterface.com/downloads/info11032-Progress.html
 	http://wow.curse.com/downloads/wow-addons/details/progress.aspx
