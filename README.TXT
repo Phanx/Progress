@@ -1,8 +1,8 @@
 Progress
 ========
 
-* Written by Phanx <addons@phanx.net>
-* Copyright © 2008–2011 Phanx. Some rights reserved. See LICENSE.txt for details.
+* Copyright (c) 2008-2012 Phanx <addons@phanx.net>. All rights reserved.
+* See the accompanying LICENSE file for more information.
 * http://www.wowinterface.com/downloads/info11032-Progress.html
 * http://www.curse.com/addons/wow/progress
 
@@ -35,18 +35,26 @@ Localization
 Compatible with English, Deutsch, Español, Français, Português, Русский,
 한국어, 简体中文, and 正體中文 game clients.
 
-Translated into English, Deutsch, Español, Français, and Русский. To add
-or update translations for any locale, see the CurseForge project page:
+Translated into English, Deutsch, Español, Français, and Русский.
 
-http://wow.curseforge.com/addons/progress/localization/
+To add or update translations for any language, see the Localization tab
+on the CurseForge project page:
+
+http://wow.curseforge.com/addons/phanxchat/localization/
 
 
 Feedback
 --------
 
-Please use the ticket system on either download site report bugs or
-request features. Use the comment system only for general questions
-or comments.
+Bugs, errors, or other problems:
+	Submit a bug report ticket on either download page.
 
-If you need to contact me privately, you may do by private message
-on either download site, or by email at <addons@phanx.net>.
+Feature requests or other suggestions:
+	Submit a feature request ticket system on either download page.
+
+General questions or comments:
+	Post a comment on the WoWInterface download page.
+
+If you need to contact me privately for a reason other than those listed
+above, you can send me a private message on either download site, or
+email me at <addons@phanx.net>.
