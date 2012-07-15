@@ -165,6 +165,10 @@ local XP_PER_LEVEL = { -- How much XP needed to complete each level
 ------------------------------------------------------------------------
 
 local MAX_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]
+if MAX_LEVEL - 1 > #XP_PER_LEVEL then
+	-- temp workaround for MoP beta
+	MAX_LEVEL = #XP_PER_LEVEL + 1
+end
 
 local XP_TO_MAX_LEVEL = 0
 for i = 1, MAX_LEVEL - 1 do
