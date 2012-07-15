@@ -33,7 +33,7 @@ Localization
 ------------
 
 Compatible with English, Deutsch, Español, Français, Português, Русский,
-한국어, 简体中文, and 正體中文 game clients.
+한국어, 简体中文, and 繁體中文 game clients.
 
 Translated into English, Deutsch, Español, Français, and Русский.
 
