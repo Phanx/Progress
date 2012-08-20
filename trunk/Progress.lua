@@ -193,8 +193,6 @@ end
 
 ------------------------------------------------------------------------
 
-------------------------------------------------------------------------
-
 function Progress:ADDON_LOADED(addon)
 	if addon ~= "Progress" then return end
 
@@ -293,7 +291,7 @@ end
 
 ------------------------------------------------------------------------
 
-local groupmark = "%1" .. (tonumber("1.1") and "." or ",")
+local groupmark = "%1" .. (tonumber("1.1") and "," or ".")
 
 local function GroupDigits(num)
 	if not num then return 0 end
