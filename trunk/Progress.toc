@@ -1,10 +1,10 @@
 ## Interface: 50001
-## Version: 5.0.1.wowi:revision-beta
+## Version: 4.3.4.wowi:revision-beta
 
 ## Title: Progress
 ## Notes: Experience and reputation in a simple format on any DataBroker display.
-## Notes-esES: Simplemente mostrar experiencia y reputación en cualquier accesorio de visualización DataBroker.
-## Notes-esMX: Simplemente mostrar experiencia y reputación en cualquier accesorio de visualización DataBroker.
+## Notes-esES: Simplemente mostrar experiencia y reputación en cualquier addon de visualización DataBroker.
+## Notes-esMX: Simplemente mostrar experiencia y reputación en cualquier addon de visualización DataBroker.
 
 ## Author: Phanx
 ## X-Email: addons@phanx.net
