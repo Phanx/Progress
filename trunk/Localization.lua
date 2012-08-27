@@ -61,17 +61,17 @@ return end
 
 --[[--------------------------------------------------------------------
 	itIT | Italian | Italiano
-	Last updated: YYYY-MM-DD by UNKNOWN
+	Last updated: 2012-08-26 by Phanx
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "itIT" then
---	L["Progress"] = ""
---	L["Current XP"] = ""
---	L["Rested XP"] = ""
---	L["XP To Next Level"] = ""
---	L["XP To Level %d"] = ""
---	L["To Next Standing"] = ""
---	L["Click to toggle the reputation panel."] = ""
+	L["Progress"] = "Progressi"
+	L["Current XP"] = "PE attuali"
+	L["Rested XP"] = "PE riposato"
+	L["XP To Next Level"] = "PE al livello successivo"
+	L["XP To Level %d"] = "PE al livello %d"
+	L["To Next Standing"] = "Al prestigio successivo"
+	L["Click to toggle the reputation panel."] = "Clicca per mostrare il pannello delle reputazioni."
 return end
 
 --[[--------------------------------------------------------------------
