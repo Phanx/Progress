@@ -292,13 +292,15 @@ end
 
 ------------------------------------------------------------------------
 
+local groupmark = "%1" ..  LARGE_NUMBER_SEPERATOR
+
 local function GroupDigits( num )
 	if not num then return 0 end
 	if abs( num ) < 10000 then return num end
 
 	local neg = num < 0 and "-" or ""
 	local left, mid, right = strmatch( tostring( abs( num ) ), "^([^%d]*%d)(%d*)(.-)$" )
-	return format( "%s%s%s%s", neg, left, strrev( gsub( strrev( mid ), "(%d%d%d)", LARGE_NUMBER_SEPERATOR ) ), right )
+	return format( "%s%s%s%s", neg, left, strrev( gsub( strrev( mid ), "(%d%d%d)", groupmark ) ), right )
 end
 
 function Progress:UpdateText()
