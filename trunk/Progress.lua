@@ -76,51 +76,51 @@ local STANDING_LABEL_FEMALE = {
 ------------------------------------------------------------------------
 
 local XP_PER_LEVEL = { -- How much XP needed to reach each level
-	0, -- 1
+	0,
 	400,
 	900,
 	1400,
-	2100, -- 5
+	2100,
 	2800,
 	3600,
 	4500,
 	5400,
 	6500, -- 10
-	7600,
-	8700,
-	9800,
-	11000,
-	12300, -- 15
-	13600,
-	15000,
-	16400,
-	17800,
-	19300, -- 20
-	20800,
-	22400,
-	24000,
-	25500,
-	27200, -- 25
-	28900,
-	30500,
-	32200,
-	33900,
-	36300, -- 30
-	38800,
-	41600,
-	44600,
-	48000, -- 35
-	51400,
-	55000,
-	58700,
-	62400,
-	66200,
-	70200, -- 40
+	6080,
+	6960,
+	7840,
+	8800,
+	9840,
+	10800,
+	12000,
+	13120,
+	14240,
+	15400, -- 20
+	16640,
+	17920,
+	19200,
+	20400,
+	21760,
+	23123,
+	24400,
+	25760,
+	21120,
+	29040, -- 30
+	31040,
+	33280,
+	35680,
+	38400,
+	41120,
+	44000,
+	46960,
+	49920,
+	52960,
+	56160, -- 40
 	74300,
 	78500,
 	82800,
 	87100,
-	91600, -- 45
+	91600,
 	96300,
 	101000,
 	105800,
@@ -130,7 +130,7 @@ local XP_PER_LEVEL = { -- How much XP needed to reach each level
 	126100,
 	131500,
 	137000,
-	142500, -- 55
+	142500,
 	148200,
 	154000,
 	159900,
@@ -140,37 +140,37 @@ local XP_PER_LEVEL = { -- How much XP needed to reach each level
 	317000,
 	349000,
 	386000,
-	428000, -- 65
+	428000,
 	475000,
 	527000,
 	585000,
-	658000,
+	648000,
 	717000, -- 70
-	1523800,
-	1539600,
-	1555700,
-	1571800,
-	1587900, -- 75
-	1604200,
-	1620700,
-	1637400,
-	1653900,
-	1670800, -- 80
+	812700,
+	821000,
+	830000,
+	838000,
+	847000,
+	855300,
+	865000,
+	873000,
+	882000,
+	891000, -- 80
 	1686300,
 	2121500,
-	4004000,
-	5203400,
-	9165100, -- 85
+	2642640,
+	3434200,
+	4582500,
 	13000000,
 	15080000,
 	18980000,
 	22880000,
-	27560000, -- 90
+	27560000, --90
 }
 
 ------------------------------------------------------------------------
 
-local MAX_PLAYER_LEVEL
+local MAX_PLAYER_LEVEL = 0
 local XP_TO_MAX_LEVEL = 0
 
 local xpToCurrentLevel = 0
@@ -221,17 +221,16 @@ end
 
 function Progress:PLAYER_LOGIN()
 	MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
---[[
 	for i = 1, MAX_PLAYER_LEVEL do
 		local xp = XP_PER_LEVEL[ i ]
 		if not xp then
-			-- temp workaround for new expansions without data yet
+			-- workaround for new expansions without data yet
 			xp = XP_PER_LEVEL[ i - 1 ]
 			XP_PER_LEVEL[ i ] = xp
 		end
 		XP_TO_MAX_LEVEL = XP_TO_MAX_LEVEL + xp
 	end
-]]
+
 	self.obj = LibStub( "LibDataBroker-1.1" ):NewDataObject( "Progress", {
 		type  = "data source",
 		icon  = "Interface\\Icons\\INV_Misc_PocketWatch_02",
@@ -283,7 +282,7 @@ function Progress:PLAYER_LEVEL_UP()
 	else
 		xpToCurrentLevel = 0
 		if level > 1 then
-			for i = 1, level - 1 do
+			for i = 1, level do
 				xpToCurrentLevel = xpToCurrentLevel + XP_PER_LEVEL[i]
 			end
 		end
