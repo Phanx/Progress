@@ -1,7 +1,7 @@
 --[[--------------------------------------------------------------------
 	Progress
 	DataBroker plugin to show experience and reputation.
-	Copyright ( c ) 2008-2012 Phanx <addons@phanx.net>. All rights reserved.
+	Copyright (c) 2008-2012 Phanx <addons@phanx.net>. All rights reserved.
 	See the accompanying README and LICENSE files for more information.
 	http://www.wowinterface.com/downloads/info11032-Progress.html
 	http://www.curse.com/addons/wow/progress
@@ -291,7 +291,10 @@ end
 
 ------------------------------------------------------------------------
 
-local groupmark = "%1" ..  LARGE_NUMBER_SEPERATOR
+local grouped = "%1" .. LARGE_NUMBER_SEPERATOR
+if GetLocale() == "ruRU" then
+	grouped = "%1 " -- Blizzard forgot to define LARGE_NUMBER_SEPERATOR in the Russian client
+end
 
 local function GroupDigits( num )
 	if not num then return 0 end
@@ -299,7 +302,7 @@ local function GroupDigits( num )
 
 	local neg = num < 0 and "-" or ""
 	local left, mid, right = strmatch( tostring( abs( num ) ), "^([^%d]*%d)(%d*)(.-)$" )
-	return format( "%s%s%s%s", neg, left, strrev( gsub( strrev( mid ), "(%d%d%d)", groupmark ) ), right )
+	return format( "%s%s%s%s", neg, left, strrev( gsub( strrev( mid ), "(%d%d%d)", grouped ) ), right )
 end
 
 function Progress:UpdateText()
