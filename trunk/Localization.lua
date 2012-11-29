@@ -121,17 +121,17 @@ return end
 
 --[[--------------------------------------------------------------------
 	zhCN | Simplified Chinese | 简体中文
-	Last updated: YYYY-MM-DD by UNKNOWN
+	Last updated: 2012-10-16 by okaydud
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "zhCN" then
 --	L["Progress"] = ""
---	L["Current XP"] = ""
---	L["Rested XP"] = ""
---	L["XP To Next Level"] = ""
---	L["XP To Level %d"] = ""
---	L["To Next Standing"] = ""
---	L["Click to toggle the reputation panel."] = ""
+	L["Current XP"] = "当前经验"
+	L["Rested XP"] = "休息奖励"
+	L["XP To Next Level"] = "离升级所需经验"
+	L["XP To Level %d"] = "等级%d所需经验"
+	L["To Next Standing"] = "到下一地位"
+	L["Click to toggle the reputation panel."] = "点击打开声望面板"
 return end
 
 --[[--------------------------------------------------------------------
