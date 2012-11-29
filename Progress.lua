@@ -330,13 +330,15 @@ function Progress:UpdateTooltip( tooltip )
 		tooltip:AddDoubleLine( L["Level"], myLevel, nil, nil, nil, 1, 1, 1 )
 		if myLevel < MAX_PLAYER_LEVEL then
 			local cur, max, rest = UnitXP( "player" ), UnitXPMax( "player" ), GetXPExhaustion()
+			local total = xpToCurrentLevel + cur
 			tooltip:AddDoubleLine( L["Current XP"], format( "%s / %s (%d%%)", GroupDigits( cur ), GroupDigits( max ), floor( cur / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
 			if rest then
 				tooltip:AddDoubleLine( L["Rested XP"], format( "%s (%s%%)", GroupDigits( rest ), floor( rest / max * 1000 / 10 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
 			end
 			tooltip:AddDoubleLine( L["XP To Next Level"], GroupDigits( max - cur ), nil, nil, nil, 1, 1, 1 )
 			tooltip:AddLine( " " )
-			tooltip:AddDoubleLine( format( L["XP To Level %d"], MAX_PLAYER_LEVEL ), GroupDigits( XP_TO_MAX_LEVEL - ( xpToCurrentLevel + cur ) ), nil, nil, nil, 1, 1, 1 )
+			tooltip:AddDoubleLine( format( L["XP To Level %d"], MAX_PLAYER_LEVEL ), GroupDigits( XP_TO_MAX_LEVEL - total ), nil, nil, nil, 1, 1, 1 )
+			tooltip:AddDoubleLine( " ", format( "%d%%", floor( total / XP_TO_MAX_LEVEL * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
 		end
 		needblank = true
 	end
