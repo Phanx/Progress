@@ -313,7 +313,8 @@ function Progress:UpdateText()
 	else
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		if name then
-			self.obj.text = format( "%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits( ( max - min ) - ( cur - min ) ), floor( ( cur - min ) / ( max - min ) * 100 ) )
+			min, max, cur = 0, max - min, cur - min
+			self.obj.text = format( "%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits( max - cur ), floor( cur / max * 100 + 0.5 ) )
 		else
 			self.obj.text = L["Progress"]
 		end
@@ -333,7 +334,7 @@ function Progress:UpdateTooltip( tooltip )
 			local total = xpToCurrentLevel + cur
 			tooltip:AddDoubleLine( L["Current XP"], format( "%s / %s (%d%%)", GroupDigits( cur ), GroupDigits( max ), floor( cur / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
 			if rest then
-				tooltip:AddDoubleLine( L["Rested XP"], format( "%s (%s%%)", GroupDigits( rest ), floor( rest / max * 1000 / 10 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
+				tooltip:AddDoubleLine( L["Rested XP"], format( "%s (%s%%)", GroupDigits( rest ), floor( rest / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
 			end
 			tooltip:AddDoubleLine( L["XP To Next Level"], GroupDigits( max - cur ), nil, nil, nil, 1, 1, 1 )
 			tooltip:AddLine( " " )
@@ -349,9 +350,10 @@ function Progress:UpdateTooltip( tooltip )
 				tooltip:AddLine( " " )
 				needblank = nil
 			end
+			min, max, cur = 0, max - min, cur - min
 			tooltip:AddDoubleLine( L["Faction"], name, nil, nil, nil, 1, 1, 1 )
 			tooltip:AddDoubleLine( L["Standing"], format( "%s%s|r", STANDING_COLOR[standing], UnitSex( "player" ) == 3 and STANDING_LABEL_FEMALE[standing] or STANDING_LABEL_MALE[standing] ) )
-			tooltip:AddDoubleLine( L["Reputation"], format( "%s / %s (%d%%)", GroupDigits( cur - min ), GroupDigits( max - min ), floor( cur / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
+			tooltip:AddDoubleLine( L["Reputation"], format( "%s / %s (%d%%)", GroupDigits( cur ), GroupDigits( max ), floor( cur / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
 			if standing < 8 then
 				tooltip:AddDoubleLine( L["To Next Standing"], GroupDigits( max - cur ), nil, nil, nil, 1, 1, 1 )
 			end
