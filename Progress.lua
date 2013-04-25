@@ -310,15 +310,19 @@ function Progress:UpdateText()
 	if UnitLevel( "player" ) < MAX_PLAYER_LEVEL then
 		local cur, max = UnitXP( "player" ), UnitXPMax( "player" )
 		self.obj.text = format( "%s (%d%%)", GroupDigits( max - cur ), floor( cur / max * 100 + 0.5 ) )
-	else
-		local name, standing, min, max, cur = GetWatchedFactionInfo()
-		if name then
-			min, max, cur = 0, max - min, cur - min
+		return
+	end
+
+	local name, standing, min, max, cur = GetWatchedFactionInfo()
+	if name then
+		max, cur = max - min, cur - min
+		if max > 0 then -- avoid "integer overflow attentping to store -1.#IND" ???
 			self.obj.text = format( "%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits( max - cur ), floor( cur / max * 100 + 0.5 ) )
-		else
-			self.obj.text = L["Progress"]
+			return
 		end
 	end
+
+	self.obj.text = L["Progress"]
 end
 
 function Progress:UpdateTooltip( tooltip )
