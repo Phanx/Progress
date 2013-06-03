@@ -96,7 +96,7 @@ for i = #XP_PER_LEVEL + 1, MAX_PLAYER_LEVEL do
 	XP_PER_LEVEL[ i ] = XP_PER_LEVEL[ i - 1 ]
 end
 for i = 1, MAX_PLAYER_LEVEL do
-	XP_TO_MAX_LEVEL = XP_TO_MAX_LEVEL + xp
+	XP_TO_MAX_LEVEL = XP_TO_MAX_LEVEL + XP_PER_LEVEL[ i ]
 end
 
 local xpToCurrentLevel = 0
