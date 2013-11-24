@@ -24,7 +24,7 @@ if GAME_LOCALE == "deDE" then
 	L["Current XP"] = "Aktuelle EP"
 	L["Rested XP"] = "Erholt EP"
 	L["XP To Next Level"] = "EP zum nächsten Stufe"
-	L["XP To Level %d"] = "EP zum Stufe 85"
+	L["XP To Level %d"] = "EP zum Stufe %d"
 	L["To Next Standing"] = "Ruf zum nächsten Einstellung"
 	L["Click to toggle the reputation panel."] = "Klicken, um den Ruffenster anzuzeigen."
 return end
