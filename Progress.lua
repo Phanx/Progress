@@ -1,10 +1,16 @@
 --[[--------------------------------------------------------------------
 	Progress
 	DataBroker plugin to show experience and reputation.
-	Copyright (c) 2008-2014 Phanx. All rights reserved.
-	See the accompanying README and LICENSE files for more information.
+	Copyright (c) 2008-2014 Phanx <addons@phanx.net>. All rights reserved.
 	http://www.wowinterface.com/downloads/info11032-Progress.html
 	http://www.curse.com/addons/wow/progress
+
+	Please DO NOT upload this addon to other websites, or post modified
+	versions of it. However, you are welcome to use any/all of its code
+	in your own addon, as long as you do not use my name or the name of
+	this addon ANYWHERE in your addon, including in its name, outside of
+	an optional attribution. You are also welcome to include this addon
+	WITHOUT CHANGES in compilations posted on Curse and/or WoWInterface.
 ----------------------------------------------------------------------]]
 
 local _, ns = ...
@@ -85,6 +91,7 @@ local XP_PER_LEVEL = { -- How much XP needed to reach each level
  290000,   317000,   349000,   386000,   428000,   475000,   527000,   585000,   648000,   717000, -- 70
  812700,   821000,   830000,   838000,   847000,   855300,   865000,   873000,   882000,   891000, -- 80
 1686300,  2121500,  2642640,  3434200,  4582500,  8670000, 10050000, 12650000, 15250000, 18370000, -- 90
+-- 100
 }
 
 ------------------------------------------------------------------------
