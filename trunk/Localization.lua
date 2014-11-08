@@ -5,6 +5,13 @@
 	See the accompanying README and LICENSE files for more information.
 	http://www.wowinterface.com/downloads/info11032-Progress.html
 	http://www.curse.com/addons/wow/progress
+
+	Please DO NOT upload this addon to other websites, or post modified
+	versions of it. However, you are welcome to use any/all of its code
+	in your own addon, as long as you do not use my name or the name of
+	this addon ANYWHERE in your addon, including in its name, outside of
+	an optional attribution. You are also welcome to include this addon
+	WITHOUT CHANGES in compilations posted on Curse and/or WoWInterface.
 ----------------------------------------------------------------------]]
 
 local GAME_LOCALE = GetLocale()
@@ -16,46 +23,46 @@ ns.L = L
 
 --[[--------------------------------------------------------------------
 	deDE | German | Deutsch
-	Last updated: 2011-03-14 by Akkorian
+	Last updated: 2014-11-07 by Phanx
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "deDE" then
 	L["Progress"] = "Fortschritt"
 	L["Current XP"] = "Aktuelle EP"
-	L["Rested XP"] = "Erholt EP"
-	L["XP To Next Level"] = "EP zum nächsten Stufe"
-	L["XP To Level %d"] = "EP zum Stufe %d"
-	L["To Next Standing"] = "Ruf zum nächsten Einstellung"
-	L["Click to toggle the reputation panel."] = "Klicken, um den Ruffenster anzuzeigen."
+	L["Rested XP"] = "Erholte EP"
+	L["To Next Level"] = "Zur nächsten Stufe"
+	L["To Level %d"] = "Zur Stufe %d"
+	L["To Next Standing"] = "Zur nächsten Einstellung"
+	L["Click to toggle the reputation panel."] = "Klick, um den Ruffenster anzuzeigen."
 return end
 
 --[[--------------------------------------------------------------------
-	esES/esMX | Spanish (Europe/Latin America) | Español (Europa/América Latina)
-	Last updated: 2011-03-14 by Akkorian
+	esES / esMX | European / Latin American Spanish | Español de España / America latina
+	Last updated: 2014-11-07 by Phanx
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "esES" or GetLocale() == "esMX" then
 	L["Progress"] = "Progreso"
 	L["Current XP"] = "PE actual"
 	L["Rested XP"] = "PE descansado"
-	L["XP To Next Level"] = "PE al siguiente nivel"
-	L["XP To Level %d"] = "PE al nivel %d"
+	L["To Next Level"] = "Al siguiente nivel"
+	L["To Level %d"] = "Al nivel %d"
 	L["To Next Standing"] = "Al siguiente prestigio"
 	L["Click to toggle the reputation panel."] = "Haz clic para abrir el panel de reputación."
 return end
 
 --[[--------------------------------------------------------------------
 	frFR | French | Français
-	Last updated: 2011-03-14 by Akkorian
+	Last updated: 2014-11-07 by Phanx
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "frFR" then
 	L["Progress"] = "Progrès"
 	L["Current XP"] = "PX actuelle"
 	L["Rested XP"] = "PX reposée"
-	L["XP To Next Level"] = "PX au niveau suivant"
-	L["XP To Level %d"] = "PX au niveau %d"
-	L["To Next Standing"] = "Rép. au statut supérieur"
+	L["To Next Level"] = "Au niveau suivant"
+	L["To Level %d"] = "Au niveau %d"
+	L["To Next Standing"] = "Au statut supérieur"
 	L["Click to toggle the reputation panel."] = "Cliquez pour afficher la feuille de réputation."
 return end
 
@@ -68,8 +75,8 @@ if GAME_LOCALE == "itIT" then
 	L["Progress"] = "Progressi"
 	L["Current XP"] = "PE attuali"
 	L["Rested XP"] = "PE riposato"
-	L["XP To Next Level"] = "PE al livello successivo"
-	L["XP To Level %d"] = "PE al livello %d"
+	L["To Next Level"] = "Al livello successivo"
+	L["To Level %d"] = "Al livello %d"
 	L["To Next Standing"] = "Al prestigio successivo"
 	L["Click to toggle the reputation panel."] = "Clicca per mostrare il pannello delle reputazioni."
 return end
@@ -83,23 +90,23 @@ if GAME_LOCALE == "ptBR" then
 	L["Progress"] = "Progresso"
 	L["Current XP"] = "EXP atual"
 	L["Rested XP"] = "EXP descansando"
-	L["XP To Next Level"] = "EXP para nível seguinte"
-	L["XP To Level %d"] = "EXP para nível %d"
-	L["To Next Standing"] = "Rep. a situação próxima"
+	L["To Next Level"] = "Para nível seguinte"
+	L["To Level %d"] = "Para nível %d"
+	L["To Next Standing"] = "Para situação próxima"
 	L["Click to toggle the reputation panel."] = "Clique para mostrar/ocultar o painel de reputação."
 return end
 
 --[[--------------------------------------------------------------------
 	ruRU | Russian | Русский
-	Last updated: 2011-03-14 by Akkorian
+	Last updated: 2011-03-14 by Phanx
 ----------------------------------------------------------------------]]
 
 if GAME_LOCALE == "ruRU" then
 	L["Progress"] = "Прогресс"
 	L["Current XP"] = "Текущий опыт"
 	L["Rested XP"] = "Отдых опыт"
-	L["XP To Next Level"] = "к следующий уровня"
-	L["XP To Level %d"] = "к %d-го уровня"
+	L["To Next Level"] = "к следующий уровня"
+	L["To Level %d"] = "к %d-го уровня"
 	L["To Next Standing"] = "к следующий отношения"
 	L["Click to toggle the reputation panel."] = "Щелкните, чтобы открыть окно репутации."
 return end
@@ -113,8 +120,8 @@ if GAME_LOCALE == "koKR" then
 --	L["Progress"] = ""
 --	L["Current XP"] = ""
 --	L["Rested XP"] = ""
---	L["XP To Next Level"] = ""
---	L["XP To Level %d"] = ""
+--	L["To Next Level"] = ""
+--	L["To Level %d"] = ""
 --	L["To Next Standing"] = ""
 --	L["Click to toggle the reputation panel."] = ""
 return end
@@ -128,8 +135,8 @@ if GAME_LOCALE == "zhCN" then
 --	L["Progress"] = ""
 	L["Current XP"] = "当前经验"
 	L["Rested XP"] = "休息奖励"
-	L["XP To Next Level"] = "离升级所需经验"
-	L["XP To Level %d"] = "等级%d所需经验"
+	L["To Next Level"] = "离升级所需经验"
+	L["To Level %d"] = "等级%d所需经验"
 	L["To Next Standing"] = "到下一地位"
 	L["Click to toggle the reputation panel."] = "点击打开声望面板"
 return end
@@ -143,8 +150,8 @@ if GAME_LOCALE == "zhTW" then
 --	L["Progress"] = ""
 --	L["Current XP"] = ""
 --	L["Rested XP"] = ""
---	L["XP To Next Level"] = ""
---	L["XP To Level %d"] = ""
+--	L["To Next Level"] = ""
+--	L["To Level %d"] = ""
 --	L["To Next Standing"] = ""
 --	L["Click to toggle the reputation panel."] = ""
 return end
