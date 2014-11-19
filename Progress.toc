@@ -1,5 +1,5 @@
 ## Interface: 60000
-## Version: 6.0.2.wowi:revision
+## Version: @project-version@
 
 ## Title: Progress
 ## Notes: Basic experience and reputation plugin for DataBroker displays.
@@ -9,16 +9,8 @@
 
 ## Author: Phanx
 ## X-Email: addons@phanx.net
-## X-Copyright: Copyright (c) 2008-2014 Phanx.
-## X-License: All rights reserved.
-## X-CompatibleLocales: enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ruRU, zhCN, zhTW
-## X-Localizations: enUS, deDE, esES, esMX, frFR, itIT, ptBR, ruRU
-## X-Website: http://www.wowinterface.com/downloads/info11032-Progress.html
-## X-Curse-Project-ID: progress
-## X-WoWI-ID: 11032
-
-## LoadManagers: AddonLoader
-## X-LoadOn-Always: delayed
+## X-Copyright: Copyright (c) 2008-2014 Phanx. All rights reserved.
+## X-Website: https://github.com/Phanx/Progress
 
 ## OptionalDependencies: LibDataBroker-1.1
 ## SavedVariables: ProgressDB
