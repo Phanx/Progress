@@ -1,3 +1,7 @@
+### Version 6.0.3.36
+
+* Updated experience values for levels 90-100
+
 ### Version 6.0.2.67
 
 * Updated for WoW 6.0
