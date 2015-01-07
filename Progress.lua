@@ -11,14 +11,14 @@ local _, ns = ...
 
 ------------------------------------------------------------------------
 
-local L = setmetatable( ns.L or { }, { __index = function( t, k )
+local L = setmetatable(ns.L or {}, { __index = function(t, k)
 	if k == nil then return "" end
-	local v = tostring( k )
+	local v = tostring(k)
 	t[k] = v
 	return v
-end } )
+end })
 
-for k, v in pairs( L ) do -- clean up missing translations
+for k, v in pairs(L) do -- clean up missing translations
 	if v == "" then
 		L[k] = k
 	end
@@ -32,10 +32,10 @@ L["Reputation"] = REPUTATION
 ------------------------------------------------------------------------
 
 local defaults = {
-	forceRep = false,		-- Show reputation in the tooltip even if below max level
-	friendlyNumbers = true,	-- Adds digit grouping to large numbers
-	longText = false,		-- Show current level or watched faction on plugin text [NYI]
-	shortFactions = true,	-- Abbreviate name shown with longText [NYI]
+	forceRep = false,       -- Show reputation in the tooltip even if below max level
+	friendlyNumbers = true, -- Add digit grouping to large numbers
+	longText = false,       -- Show current level or watched faction on plugin text [NYI]
+	shortFactions = true,   -- Abbreviate name shown with longText [NYI]
 }
 
 ------------------------------------------------------------------------
@@ -92,13 +92,13 @@ local XP_PER_LEVEL = { -- How much XP needed to reach each level
 ------------------------------------------------------------------------
 
 local XP_TO_MAX_LEVEL = 0
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL_TABLE[ GetExpansionLevel() ]
+local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL_TABLE[GetExpansionLevel()]
 for i = #XP_PER_LEVEL + 1, MAX_PLAYER_LEVEL do
 	-- workaround for new expansions without data yet
-	XP_PER_LEVEL[ i ] = XP_PER_LEVEL[ i - 1 ]
+	XP_PER_LEVEL[i] = XP_PER_LEVEL[i - 1]
 end
 for i = 1, MAX_PLAYER_LEVEL do
-	XP_TO_MAX_LEVEL = XP_TO_MAX_LEVEL + XP_PER_LEVEL[ i ]
+	XP_TO_MAX_LEVEL = XP_TO_MAX_LEVEL + XP_PER_LEVEL[i]
 end
 
 local xpToCurrentLevel = 0
@@ -106,23 +106,23 @@ local shortFactions = {}
 
 ------------------------------------------------------------------------
 
-local Progress = CreateFrame( "Frame" )
-Progress:SetScript( "OnEvent", function( self, event, ... ) return self[event] and self[event]( self, ... ) end )
-Progress:RegisterEvent( "ADDON_LOADED" )
+local Progress = CreateFrame("Frame")
+Progress:SetScript("OnEvent", function(self, event, ...) return self[event] and self[event](self, ...) end)
+Progress:RegisterEvent("ADDON_LOADED")
 
 ------------------------------------------------------------------------
 
-local function Debug( lvl, str, ... )
+local function Debug(lvl, str, ...)
 	if lvl > 0 then return end
 	if ... then
-		str = str:format( ... )
+		str = str:format(...)
 	end
-	DEFAULT_CHAT_FRAME:AddMessage( "|cffff7f7fProgress:|r " .. str )
+	DEFAULT_CHAT_FRAME:AddMessage("|cffff7f7fProgress:|r " .. str)
 end
 
 ------------------------------------------------------------------------
 
-function Progress:ADDON_LOADED( addon )
+function Progress:ADDON_LOADED(addon)
 	if addon ~= "Progress" then return end
 
 	if not ProgressDB then
@@ -130,42 +130,42 @@ function Progress:ADDON_LOADED( addon )
 		self.db = ProgressDB
 	else
 		self.db = ProgressDB
-		for k, v in pairs( defaults ) do
-			if type( self.db[k] ) ~= type( defaults[k] ) then
+		for k, v in pairs(defaults) do
+			if type(self.db[k]) ~= type(defaults[k]) then
 				self.db[k] = v
 			end
 		end
 	end
 
-	self:UnregisterEvent( "ADDON_LOADED" )
+	self:UnregisterEvent("ADDON_LOADED")
 	self.ADDON_LOADED = nil
 
 	if IsLoggedIn() then
 		self:PLAYER_LOGIN()
 	else
-		self:RegisterEvent( "PLAYER_LOGIN" )
+		self:RegisterEvent("PLAYER_LOGIN")
 	end
 end
 
 function Progress:PLAYER_LOGIN()
-	self.obj = LibStub( "LibDataBroker-1.1" ):NewDataObject( "Progress", {
+	self.obj = LibStub("LibDataBroker-1.1"):NewDataObject("Progress", {
 		type  = "data source",
 		icon  = "Interface\\Icons\\INV_Misc_PocketWatch_02",
 		label = L["Progress"],
 		text  = UNKNOWN,
-		OnClick = function() ToggleCharacter( "ReputationFrame" ) end,
-		OnTooltipShow = function( tooltip ) return Progress:UpdateTooltip( tooltip ) end,
-	} )
+		OnClick = function() ToggleCharacter("ReputationFrame") end,
+		OnTooltipShow = function(tooltip) return Progress:UpdateTooltip(tooltip) end,
+	})
 
 	self:PLAYER_LEVEL_UP()
 
-	if UnitLevel( "player" ) < MAX_PLAYER_LEVEL then
-		self:RegisterEvent( "PLAYER_XP_UPDATE" )
-		self:RegisterEvent( "UPDATE_EXHAUSTION" )
+	if UnitLevel("player") < MAX_PLAYER_LEVEL then
+		self:RegisterEvent("PLAYER_XP_UPDATE")
+		self:RegisterEvent("UPDATE_EXHAUSTION")
 	else
-		self:RegisterEvent( "UPDATE_FACTION" )
-		self:RegisterEvent( "PLAYER_LEVEL_UP" )
-		hooksecurefunc( "SetWatchedFactionIndex", function() return self:UpdateText() end )
+		self:RegisterEvent("UPDATE_FACTION")
+		self:RegisterEvent("PLAYER_LEVEL_UP")
+		hooksecurefunc("SetWatchedFactionIndex", function() return self:UpdateText() end)
 	end
 	self:UpdateText()
 
@@ -173,14 +173,14 @@ function Progress:PLAYER_LOGIN()
 	self.UPDATE_EXHAUSTION = self.UpdateText
 	self.PLAYER_XP_UPDATE = self.UpdateText
 
-	self:RegisterEvent( "PLAYER_LOGOUT" )
+	self:RegisterEvent("PLAYER_LOGOUT")
 
-	self:UnregisterEvent( "PLAYER_LOGIN" )
+	self:UnregisterEvent("PLAYER_LOGIN")
 	self.PLAYER_LOGIN = nil
 end
 
 function Progress:PLAYER_LOGOUT()
-	for k, v in pairs( self.db ) do
+	for k, v in pairs(self.db) do
 		if defaults[k] == v then
 			self.db[k] = nil
 		end
@@ -188,14 +188,14 @@ function Progress:PLAYER_LOGOUT()
 end
 
 function Progress:PLAYER_LEVEL_UP()
-	local level = UnitLevel( "player" )
+	local level = UnitLevel("player")
 	if level == MAX_PLAYER_LEVEL then
 		xpToCurrentLevel = XP_TO_MAX_LEVEL
-		self:RegisterEvent( "UPDATE_FACTION" )
-		self:UnregisterEvent( "PLAYER_LEVEL_UP" )
-		self:UnregisterEvent( "PLAYER_XP_UPDATE" )
-		self:UnregisterEvent( "UPDATE_EXHAUSTION" )
-		hooksecurefunc( "SetWatchedFactionIndex", function() self:UpdateText() end )
+		self:RegisterEvent("UPDATE_FACTION")
+		self:UnregisterEvent("PLAYER_LEVEL_UP")
+		self:UnregisterEvent("PLAYER_XP_UPDATE")
+		self:UnregisterEvent("UPDATE_EXHAUSTION")
+		hooksecurefunc("SetWatchedFactionIndex", function() self:UpdateText() end)
 	else
 		xpToCurrentLevel = 0
 		if level > 1 then
@@ -208,25 +208,24 @@ end
 
 ------------------------------------------------------------------------
 
-local grouped = "%1" .. LARGE_NUMBER_SEPERATOR
+local grouped = "%1" .. LARGE_NUMBER_SEPERATOR -- Blizzard can't spell
 if GetLocale() == "ruRU" then
 	grouped = "%1 " -- Blizzard forgot to define LARGE_NUMBER_SEPERATOR in the Russian client
 end
 
-local function GroupDigits( num )
+local function GroupDigits(num)
 	if not num then return 0 end
-	if abs( num ) < 10000 then return num end
-
+	if abs(num) < 10000 then return num end
 	local neg = num < 0 and "-" or ""
-	local left, mid, right = strmatch( tostring( abs( num ) ), "^([^%d]*%d)(%d*)(.-)$" )
-	return format( "%s%s%s%s", neg, left, strrev( gsub( strrev( mid ), "(%d%d%d)", grouped ) ), right )
+	local left, mid, right = strmatch(tostring(abs(num)), "^([^%d]*%d)(%d*)(.-)$")
+	return format("%s%s%s%s", neg, left, strrev(gsub(strrev(mid), "(%d%d%d)", grouped)), right)
 end
 
 function Progress:UpdateText()
-	Debug( 2, "UpdateText" )
-	if UnitLevel( "player" ) < MAX_PLAYER_LEVEL then
-		local cur, max = UnitXP( "player" ), UnitXPMax( "player" )
-		self.obj.text = format( "%s (%d%%)", GroupDigits( max - cur ), floor( cur / max * 100 + 0.5 ) )
+	Debug(2, "UpdateText")
+	if UnitLevel("player") < MAX_PLAYER_LEVEL then
+		local cur, max = UnitXP("player"), UnitXPMax("player")
+		self.obj.text = format("%s (%d%%)", GroupDigits(max - cur), floor(cur / max * 100 + 0.5))
 		return
 	end
 
@@ -234,7 +233,7 @@ function Progress:UpdateText()
 	if name then
 		max, cur = max - min, cur - min
 		if max > 0 then -- avoid "integer overflow attentping to store -1.#IND" ???
-			self.obj.text = format( "%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits( max - cur ), floor( cur / max * 100 + 0.5 ) )
+			self.obj.text = format("%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits(max - cur), floor(cur / max * 100 + 0.5))
 			return
 		end
 	end
@@ -242,25 +241,25 @@ function Progress:UpdateText()
 	self.obj.text = L["Progress"]
 end
 
-function Progress:UpdateTooltip( tooltip )
-	tooltip:AddLine( L["Progress"], 1, 1, 1 )
-	tooltip:AddLine( " " )
+function Progress:UpdateTooltip(tooltip)
+	tooltip:AddLine(L["Progress"], 1, 1, 1)
+	tooltip:AddLine(" ")
 
 	local needblank
-	local myLevel = UnitLevel( "player" )
+	local myLevel = UnitLevel("player")
 	if myLevel < MAX_PLAYER_LEVEL then
-		tooltip:AddDoubleLine( L["Level"], myLevel, nil, nil, nil, 1, 1, 1 )
+		tooltip:AddDoubleLine(L["Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_PLAYER_LEVEL then
-			local cur, max, rest = UnitXP( "player" ), UnitXPMax( "player" ), GetXPExhaustion()
+			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
 			local total = xpToCurrentLevel + cur
-			tooltip:AddDoubleLine( L["Current XP"], format( "%s / %s (%d%%)", GroupDigits( cur ), GroupDigits( max ), floor( cur / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
+			tooltip:AddDoubleLine(L["Current XP"], format("%s / %s (%d%%)", GroupDigits(cur), GroupDigits(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			if rest then
-				tooltip:AddDoubleLine( L["Rested XP"], format( "%s (%s%%)", GroupDigits( rest ), floor( rest / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
+				tooltip:AddDoubleLine(L["Rested XP"], format("%s (%s%%)", GroupDigits(rest), floor(rest / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			end
-			tooltip:AddDoubleLine( L["XP To Next Level"], GroupDigits( max - cur ), nil, nil, nil, 1, 1, 1 )
-			tooltip:AddLine( " " )
-			tooltip:AddDoubleLine( format( L["XP To Level %d"], MAX_PLAYER_LEVEL ), GroupDigits( XP_TO_MAX_LEVEL - total ), nil, nil, nil, 1, 1, 1 )
-			tooltip:AddDoubleLine( " ", format( "%d%%", floor( total / XP_TO_MAX_LEVEL * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
+			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+			tooltip:AddLine(" ")
+			tooltip:AddDoubleLine(format(L["XP To Level %d"], MAX_PLAYER_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - total), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(" ", format("%d%%", floor(total / XP_TO_MAX_LEVEL * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 		end
 		needblank = true
 	end
@@ -268,19 +267,19 @@ function Progress:UpdateTooltip( tooltip )
 		local name, standing, min, max, cur = GetWatchedFactionInfo()
 		if name then
 			if needblank then
-				tooltip:AddLine( " " )
+				tooltip:AddLine(" ")
 				needblank = nil
 			end
 			min, max, cur = 0, max - min, cur - min
-			tooltip:AddDoubleLine( L["Faction"], name, nil, nil, nil, 1, 1, 1 )
-			tooltip:AddDoubleLine( L["Standing"], format( "%s%s|r", STANDING_COLOR[standing], UnitSex( "player" ) == 3 and STANDING_LABEL_FEMALE[standing] or STANDING_LABEL_MALE[standing] ) )
-			tooltip:AddDoubleLine( L["Reputation"], format( "%s / %s (%d%%)", GroupDigits( cur ), GroupDigits( max ), floor( cur / max * 100 + 0.5 ) ), nil, nil, nil, 1, 1, 1 )
+			tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Standing"], format("%s%s|r", STANDING_COLOR[standing], UnitSex("player") == 3 and STANDING_LABEL_FEMALE[standing] or STANDING_LABEL_MALE[standing]))
+			tooltip:AddDoubleLine(L["Reputation"], format("%s / %s (%d%%)", GroupDigits(cur), GroupDigits(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			if standing < 8 then
-				tooltip:AddDoubleLine( L["To Next Standing"], GroupDigits( max - cur ), nil, nil, nil, 1, 1, 1 )
+				tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
 			end
 		end
 	end
-	tooltip:AddLine( " " )
-	tooltip:AddLine( L["Click to toggle the reputation panel."] )
+	tooltip:AddLine(" ")
+	tooltip:AddLine(L["Click to toggle the reputation panel."])
 	tooltip:Show()
 end
