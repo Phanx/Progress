@@ -1,6 +1,7 @@
 ### Version 7.0.3.0
 
 * Updated for WoW 7.0
+* Updated experience per level data
 
 ### Version 6.1.0.37
 
