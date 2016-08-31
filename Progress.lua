@@ -2,9 +2,9 @@
 	Progress
 	Basic experience and reputation plugin for DataBroker displays.
 	Copyright (c) 2008-2016 Phanx <addons@phanx.net>. All rights reserved.
-	http://www.wowinterface.com/downloads/info11032-Progress.html
-	http://www.curse.com/addons/wow/progress
 	https://github.com/Phanx/Progress
+	https://mods.curse.com/addons/wow/progress
+	https://www.wowinterface.com/downloads/info11032-Progress.html
 ----------------------------------------------------------------------]]
 
 local _, ns = ...
