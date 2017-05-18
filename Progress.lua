@@ -209,19 +209,6 @@ end
 
 ------------------------------------------------------------------------
 
-local grouped = "%1" .. LARGE_NUMBER_SEPERATOR -- Blizzard can't spell
-if GetLocale() == "ruRU" then
-	grouped = "%1 " -- Blizzard forgot to define LARGE_NUMBER_SEPERATOR in the Russian client
-end
-
-local function GroupDigits(num)
-	if not num then return 0 end
-	if abs(num) < 10000 then return num end
-	local neg = num < 0 and "-" or ""
-	local left, mid, right = strmatch(tostring(abs(num)), "^([^%d]*%d)(%d*)(.-)$")
-	return format("%s%s%s%s", neg, left, strrev(gsub(strrev(mid), "(%d%d%d)", grouped)), right)
-end
-
 function Progress:GetWatchedFactionInfo()
 	local name, standing, min, max, cur = GetWatchedFactionInfo()
 	if name and min and max and max > 0 and max > min then
@@ -233,13 +220,13 @@ function Progress:UpdateText()
 	Debug(2, "UpdateText")
 	if UnitLevel("player") < MAX_PLAYER_LEVEL then
 		local cur, max = UnitXP("player"), UnitXPMax("player")
-		self.obj.text = format("%s (%d%%)", GroupDigits(max - cur), floor(cur / max * 100 + 0.5))
+		self.obj.text = format("%s (%d%%)", FormatLargeNumber(max - cur), floor(cur / max * 100 + 0.5))
 		return
 	end
 
 	local name, standing, min, max, cur = self:GetWatchedFactionInfo()
 	if name then
-		self.obj.text = format("%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits(max - cur), floor(cur / max * 100 + 0.5))
+		self.obj.text = format("%s%s (%d%%)|r", STANDING_COLOR[standing], FormatLargeNumber(max - cur), floor(cur / max * 100 + 0.5))
 		return
 	end
 
@@ -256,13 +243,13 @@ function Progress:UpdateTooltip(tooltip)
 		if myLevel < MAX_PLAYER_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
 			local total = xpToCurrentLevel + cur
-			tooltip:AddDoubleLine(L["Current XP"], format("%s / %s (%d%%)", GroupDigits(cur), GroupDigits(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Current XP"], format("%s / %s (%d%%)", FormatLargeNumber(cur), FormatLargeNumber(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			if rest then
-				tooltip:AddDoubleLine(L["Rested XP"], format("%s (%s%%)", GroupDigits(rest), floor(rest / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["Rested XP"], format("%s (%s%%)", FormatLargeNumber(rest), floor(rest / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			end
-			tooltip:AddDoubleLine(L["XP To Next Level"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["XP To Next Level"], FormatLargeNumber(max - cur), nil, nil, nil, 1, 1, 1)
 			tooltip:AddLine(" ")
-			tooltip:AddDoubleLine(format(L["XP To Level %d"], MAX_PLAYER_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - total), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(format(L["XP To Level %d"], MAX_PLAYER_LEVEL), FormatLargeNumber(XP_TO_MAX_LEVEL - total), nil, nil, nil, 1, 1, 1)
 			tooltip:AddDoubleLine(" ", format("%d%%", floor(total / XP_TO_MAX_LEVEL * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 		end
 	end
@@ -273,9 +260,9 @@ function Progress:UpdateTooltip(tooltip)
 			tooltip:AddLine(" ")
 			tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
 			tooltip:AddDoubleLine(L["Standing"], format("%s%s|r", STANDING_COLOR[standing], UnitSex("player") == 3 and STANDING_LABEL_FEMALE[standing] or STANDING_LABEL_MALE[standing]))
-			tooltip:AddDoubleLine(L["Reputation"], format("%s / %s (%d%%)", GroupDigits(cur), GroupDigits(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
+			tooltip:AddDoubleLine(L["Reputation"], format("%s / %s (%d%%)", FormatLargeNumber(cur), FormatLargeNumber(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 			if standing < 8 then
-				tooltip:AddDoubleLine(L["To Next Standing"], GroupDigits(max - cur), nil, nil, nil, 1, 1, 1)
+				tooltip:AddDoubleLine(L["To Next Standing"], FormatLargeNumber(max - cur), nil, nil, nil, 1, 1, 1)
 			end
 		end
 	end
