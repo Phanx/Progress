@@ -222,6 +222,13 @@ local function GroupDigits(num)
 	return format("%s%s%s%s", neg, left, strrev(gsub(strrev(mid), "(%d%d%d)", grouped)), right)
 end
 
+function Progress:GetWatchedFactionInfo()
+	local name, standing, min, max, cur = GetWatchedFactionInfo()
+	if name and min and max and max > 0 and max > min then
+		return name, standing, 0, max - min, cur - min
+	end
+end
+
 function Progress:UpdateText()
 	Debug(2, "UpdateText")
 	if UnitLevel("player") < MAX_PLAYER_LEVEL then
@@ -230,13 +237,10 @@ function Progress:UpdateText()
 		return
 	end
 
-	local name, standing, min, max, cur = GetWatchedFactionInfo()
+	local name, standing, min, max, cur = self:GetWatchedFactionInfo()
 	if name then
-		max, cur = max - min, cur - min
-		if max > 0 then -- avoid "integer overflow attentping to store -1.#IND" ???
-			self.obj.text = format("%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits(max - cur), floor(cur / max * 100 + 0.5))
-			return
-		end
+		self.obj.text = format("%s%s (%d%%)|r", STANDING_COLOR[standing], GroupDigits(max - cur), floor(cur / max * 100 + 0.5))
+		return
 	end
 
 	self.obj.text = L["Progress"]
@@ -244,11 +248,10 @@ end
 
 function Progress:UpdateTooltip(tooltip)
 	tooltip:AddLine(L["Progress"], 1, 1, 1)
-	tooltip:AddLine(" ")
 
-	local needblank
 	local myLevel = UnitLevel("player")
 	if myLevel < MAX_PLAYER_LEVEL then
+		tooltip:AddLine(" ")
 		tooltip:AddDoubleLine(L["Level"], myLevel, nil, nil, nil, 1, 1, 1)
 		if myLevel < MAX_PLAYER_LEVEL then
 			local cur, max, rest = UnitXP("player"), UnitXPMax("player"), GetXPExhaustion()
@@ -262,16 +265,12 @@ function Progress:UpdateTooltip(tooltip)
 			tooltip:AddDoubleLine(format(L["XP To Level %d"], MAX_PLAYER_LEVEL), GroupDigits(XP_TO_MAX_LEVEL - total), nil, nil, nil, 1, 1, 1)
 			tooltip:AddDoubleLine(" ", format("%d%%", floor(total / XP_TO_MAX_LEVEL * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
 		end
-		needblank = true
 	end
+
 	if myLevel == MAX_PLAYER_LEVEL or self.db.forceRep then
-		local name, standing, min, max, cur = GetWatchedFactionInfo()
+		local name, standing, min, max, cur = self:GetWatchedFactionInfo()
 		if name then
-			if needblank then
-				tooltip:AddLine(" ")
-				needblank = nil
-			end
-			min, max, cur = 0, max - min, cur - min
+			tooltip:AddLine(" ")
 			tooltip:AddDoubleLine(L["Faction"], name, nil, nil, nil, 1, 1, 1)
 			tooltip:AddDoubleLine(L["Standing"], format("%s%s|r", STANDING_COLOR[standing], UnitSex("player") == 3 and STANDING_LABEL_FEMALE[standing] or STANDING_LABEL_MALE[standing]))
 			tooltip:AddDoubleLine(L["Reputation"], format("%s / %s (%d%%)", GroupDigits(cur), GroupDigits(max), floor(cur / max * 100 + 0.5)), nil, nil, nil, 1, 1, 1)
@@ -280,6 +279,7 @@ function Progress:UpdateTooltip(tooltip)
 			end
 		end
 	end
+
 	tooltip:AddLine(" ")
 	tooltip:AddLine(L["Click to toggle the reputation panel."])
 	tooltip:Show()
