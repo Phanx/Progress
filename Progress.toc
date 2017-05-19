@@ -1,4 +1,4 @@
-## Interface: 70100
+## Interface: 70200
 ## Version: @project-version@
 
 ## Title: Progress
@@ -9,7 +9,7 @@
 
 ## Author: Phanx
 ## X-Email: addons@phanx.net
-## X-Copyright: Copyright (c) 2008-2016 Phanx. All rights reserved.
+## X-Copyright: Copyright (c) 2008-2017 Phanx. All rights reserved.
 ## X-Website: https://github.com/Phanx/Progress
 ## X-Curse-Project-ID: 13291
 ## X-WoWI-ID: 11032
