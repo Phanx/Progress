@@ -142,6 +142,12 @@ return end
 
 if CURRENT_LOCALE == "koKR" then
 
+L["Click to toggle the reputation panel."] = "클릭 : 평판 창 토글"
+L["Current XP"] = "현재 경험치"
+L["Rested XP"] = "휴식 경험치"
+L["XP To Level %d"] = "%d 레벨까지 경험치"
+L["XP To Next Level"] = "다음 레벨까지 경험치"
+
 return end
 
 ------------------------------------------------------------------------
